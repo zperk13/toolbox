@@ -1,0 +1,3 @@
+[submodule "rust/termsize"]
+	path = rust/termsize
+	url = https://github.com/zperk13/termsize.git

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+reset="$(tput sgr0)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+cyan="$(tput setaf 6)"
+
+echo "Symlinking everything in ${blue}shebang$reset to $blue/usr/local/bin$reset"
+for file in ./shebang/*; do
+    file=$(realpath "$file")
+    if [ -d "$file" ]; then
+        echo -e "\t${yellow}Found a directory in shebang? Skipping $blue$file$reset"
+        continue
+    elif ! [ -x "$file" ]; then
+        chmod +x "$file"
+    fi
+    name=$(basename "$file")
+    link="/usr/local/bin/$name"
+    if [ -h "$link" ]; then
+        old_link=$(readlink -f "$link")
+        if [ "$old_link" == "$(pwd)/shebang/$name" ]; then
+            echo -e "\t$cyan$name$green already installed$reset"
+        else
+            echo -e "\t$cyan$link$yellow already exists and does not link to the $green$name$yellow here. Skipping$reset"
+        fi
+    elif [ -e "$link" ]; then
+        echo -e "\t$yellow$link already exists and isn't a symlink. Skipping$reset"
+    else
+        sudo ln -s "$file" "$link"
+        echo -e "\t${green}Linked $cyan$name$reset"
+    fi
+done
+
+echo "Installing Rust tools..."
+for dir in ./rust/*; do
+    if [ -f "$dir" ]; then
+        echo "Found a file in rust? Skipping $dir."
+        continue
+    fi
+    cargo install --path "$dir" --force
+done
+
+echo "${green}Done. Make sure $blue~/.cargo/bin$green is in your \$PATH$reset"
