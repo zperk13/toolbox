@@ -1,2 +1,10 @@
 #!/usr/bin/env sh
+if ! is_command ip; then
+    >&2 echo 'my_local_ip requires the ip command'
+    exit 1
+elif ! is_command grep; then
+    >&2 echo 'my_local_ip requires grep'
+    exit 
+fi
 ip addr | grep --basic-regexp --only-matching 'inet 192.168.[0-9]\+.[0-9]\+' | grep --color=never --basic-regexp --only-matching '[0-9.]\+'
+

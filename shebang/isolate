@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
 if ! is_command eza; then
-    >&2 echo "This script requires eza to run (I know, it's not a very portable script)"
+    >&2 echo "isolate requires eza (I know, it's not a very portable script)"
     exit 1
 elif ! is_command rg; then
-   >&2 echo "This script requires ripgrep to run (I know, it's not a very portable script)"
+   >&2 echo "isolate requires ripgrep (I know, it's not a very portable script)"
     exit 2
 fi
 

@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
-curl -sL "https://api.github.com/repos/$1/releases/latest" | jq -r ".tag_name"
+if ! is_command curl; then
+    >&2 echo 'github_latest_released_version requires curl'
+    exit 1
+elif ! is_command jq; then
+    >&2 echo 'github_latest_released_version requires jq'
+    exit 2
+fi
+curl -sL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
 # Returns "null" on failure

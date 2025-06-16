@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
+if ! is_command curl; then
+    >&2 echo 'moon requires curl'
+    exit 1
+fi
 curl wttr.in/Moon
