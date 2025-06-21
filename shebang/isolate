@@ -8,15 +8,17 @@ elif ! is_command rg; then
     exit 2
 fi
 
+export PATH="$HOME/.cargo/bin:$PATH" # So it has access to tstyle
+
 # This thing isn't perfect, but I have spent hours improving it, it works good enough, I'm happy with it
 
 # list all files, only get the ones that have a dot in them that isn't at the start, and only get everything before that first non-start dot
 files_with_dots_without_dots=$(eza --only-files --no-quotes | rg --only-matching "^(.+?)\." --replace='$1');
 
-bold="$(tput bold)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-reset="$(tput sgr0)"
+bold="$(tstyle -t bold)"
+blue="$(tstyle -t blue)"
+magenta="$(tstyle -t magenta)"
+reset="$(tstyle -t reset)"
 
 # Go through all of those, remove duplicates ("abc.txt" and "abc.mp4" both become "abc")
 echo "$files_with_dots_without_dots" | uniq | while read uniq_file_start ; do

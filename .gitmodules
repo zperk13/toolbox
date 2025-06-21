@@ -1,3 +1,6 @@
 [submodule "rust/termsize"]
 	path = rust/termsize
 	url = https://github.com/zperk13/termsize.git
+[submodule "rust/tstyle"]
+	path = rust/tstyle
+	url = https://github.com/zperk13/tstyle
