@@ -19,7 +19,7 @@ for file in ./shebang/*; do
     link="/usr/local/bin/$name"
     if [ -h "$link" ]; then
         old_link=$(readlink -f "$link")
-        if [ "$old_link" == "$(pwd)/shebang/$name" ]; then
+        if [ "$old_link" == "$file" ]; then
             echo -e "\t$cyan$name$green already installed$reset"
         else
             echo -e "\t$cyan$link$yellow already exists and does not link to the $green$name$yellow here. Skipping$reset"
@@ -27,8 +27,11 @@ for file in ./shebang/*; do
     elif [ -e "$link" ]; then
         echo -e "\t$yellow$link already exists and isn't a symlink. Skipping$reset"
     else
-        sudo ln -s "$file" "$link"
-        echo -e "\t${green}Linked $cyan$name$reset"
+        if sudo ln -s "$file" "$link"; then
+            echo -e "\t${green}Linked $cyan$name$reset"
+        else
+            echo -e "\t${yellow} Failed to symlink $name$reset"
+        fi
     fi
 done
 
@@ -38,7 +41,9 @@ for dir in ./rust/*; do
         echo "Found a file in rust? Skipping $dir."
         continue
     fi
-    cargo install --path "$dir" --force
+    if ! cargo install --path "$dir" --force; then
+        echo "Failed to install $dir"
+    fi
 done
 
 echo "${green}Done. Make sure $blue~/.cargo/bin$green is in your \$PATH$reset"
