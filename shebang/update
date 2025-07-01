@@ -2,9 +2,10 @@
 
 if is_command eos-update; then
     eos-update
-else
-    >&2 echo "This update script is made for EndeavourOS and eos-update can't be found"
-    exit 1
+elif is_command yay; then
+    yay
+elif is_command pacman; then
+    pacman -Syu
 fi
 
 if is_command rustup; then
