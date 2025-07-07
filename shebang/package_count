@@ -1,0 +1,15 @@
+#!/bin/env bash
+if is_command pacman; then
+    echo "Native Explicit Arch Packages: $(pacman -Qne | wc -l)"
+    echo "Native Dependency Arch Packages: $(pacman -Qnd | wc -l)"
+    echo "AUR Packages: $(pacman -Qm | wc -l)"
+fi
+
+if is_command flatpak; then
+    echo "Flatpak Apps: $(flatpak list --app | wc -l)"
+    echo "Flatpak Runtimes: $(flatpak list --runtime | wc -l)"
+fi
+
+if is_command cargo; then
+    echo "Cargo Packages: $(cargo install --list | grep : | wc -l)"
+fi
