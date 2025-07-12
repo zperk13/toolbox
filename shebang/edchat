@@ -1,0 +1,11 @@
+#!/bin/env bash
+
+tail -f $HOME/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved\ Games/Frontier\ Developments/Elite\ Dangerous/* 2>/dev/null | grep --line-buffered '"ReceiveText"' | while read -r line; do
+    if [ "$(echo $line | jq ".Message_Localised")" = "null" ]; then
+        channel="$(echo $line | jq -r ".Channel")"
+        from="$(echo $line | jq -r ".From")"
+        message="$(echo $line | jq -r ".Message")"
+        echo "[$channel] [$from]: $message"
+    fi
+done
+
