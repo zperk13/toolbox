@@ -26,9 +26,9 @@ fi
 fps_variable="$(fps $1)"
 timestamp="$(date +%s)"
 dir="/tmp/gif$timestamp"
-if ! mkdir "$dir"
+if ! mkdir "$dir"; then
     >&2 echo "Failed to mkdir $dir"
     exit 8
 fi
 ffmpeg -i "$1" "${dir}/frame%04d.png"
-gifski -o "${timestap}.gif" --fps ${fps_variable} ${dir}/frame*.png
+gifski -o "${timestamp}.gif" --fps ${fps_variable} ${dir}/frame*.png
