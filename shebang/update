@@ -1,9 +1,17 @@
 #!/usr/bin/env sh
 
 if is_command eos-update; then
-    eos-update
+    if is_command yay; then
+        eos-update --yay
+    elif is_command paru; then
+        eos-update --paru
+    else
+        eos-update
+    fi
 elif is_command yay; then
     yay
+elif is_command paru; then
+    paru
 elif is_command pacman; then
     pacman -Syu
 fi
@@ -18,4 +26,8 @@ fi
 
 if is_command flatpak; then
     flatpak update
+fi
+
+if is_command pipx; then
+    pipx upgrade-all
 fi
