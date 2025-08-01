@@ -13,3 +13,7 @@ fi
 if is_command cargo; then
     echo "Cargo Packages: $(cargo install --list | grep : | wc -l)"
 fi
+
+if is_command pipx; then
+    echo "pipx packages: $(pipx list | grep - | wc -l)"
+fi
