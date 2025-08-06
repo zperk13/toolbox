@@ -20,7 +20,7 @@ if is_command rustup; then
     rustup update stable
 fi
 if is_command cargo; then
-    # https://stackoverflow.com/a/66049504/10821659 with `egrep` replaced with `grep -E`
+    # https://stackoverflow.com/a/66049504 with `egrep` replaced with `grep -E`
     cargo install $(cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
 fi
 
