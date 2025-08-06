@@ -6,6 +6,11 @@ yellow="$(tput setaf 3)"
 blue="$(tput setaf 4)"
 cyan="$(tput setaf 6)"
 
+if [ "$0" != "./install" ]; then
+    echo "${yellow}This script is meant to be run in its directory${reset}"
+    exit 1
+fi
+
 echo "Symlinking everything in ${blue}shebang$reset to $blue/usr/local/bin$reset"
 for file in ./shebang/*; do
     file=$(realpath "$file")
