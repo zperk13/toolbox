@@ -1,0 +1,9 @@
+#!/bin/env perl
+
+# https://stackoverflow.com/questions/5917576/sort-a-text-file-by-line-length-including-spaces/#40786477
+
+# Takes in stdin, not arguments
+
+# Prints shorter lines first, longer lines last
+
+print sort { length($a) <=> length($b) } <>
