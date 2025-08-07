@@ -14,13 +14,21 @@ fi
 echo "Symlinking everything in ${blue}shebang$reset to $blue/usr/local/bin$reset"
 for file in ./shebang/*; do
     file=$(realpath "$file")
+    name=$(basename "$file")
     if [ -d "$file" ]; then
-        echo -e "\t${yellow}Found a directory in shebang? Skipping $blue$file$reset"
+        echo -e "\t${yellow}Found a directory in shebang? Skipping ${blue}shebang/$name$reset"
+        continue
+    elif ! head -n 1 "$file" | grep '^#!' > /dev/null; then
+        echo -e "\t${yellow}shebang/$name doesn't start with a shebang. Skipping$reset"
         continue
     elif ! [ -x "$file" ]; then
         chmod +x "$file"
     fi
-    name=$(basename "$file")
+
+    if ! head -n 1 "$file" | grep '^#!/usr/bin/env' > /dev/null; then
+        echo -e "\t$yellow$name's shebang isn't #!/usr/bin/env$reset"
+    fi
+    
     link="/usr/local/bin/$name"
     if [ -h "$link" ]; then
         old_link=$(readlink -f "$link")
