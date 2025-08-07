@@ -7,5 +7,5 @@ if is_command flatpak; then
 fi
 if is_command paccache; then
     paccache --remove --uninstalled --keep 0
-    paccache --remove --keep 1
+    paccache --remove --keep 3
 fi
