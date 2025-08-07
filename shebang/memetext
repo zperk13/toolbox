@@ -1,0 +1,29 @@
+#!/bin/env bash
+
+fontfile='/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf'
+
+if ! [ -f "$fontfile" ]; then
+    >&2 echo "Hardcoded font file path doesn't exist"
+    exit 1
+fi
+
+if ! is_command ffmpeg; then
+    >&2 echo 'memetext requires ffmpeg'
+    exit 2
+fi
+
+if (( $# != 3 )); then
+    >&2 echo "Expected 3 arguments (input file, text, output file), got $# arguments"
+    exit 3
+fi
+
+if ! [ -f "$1" ]; then
+    >&2 echo "First argument should be an existing file but it isn't"
+    exit 4
+fi
+
+if [[ $1 == *.gif ]] && [[ $3 == *.gif ]]; then
+    giffix=',split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse'
+fi
+
+ffmpeg -i "$1" -vf "drawtext=fontfile=$fontfile:text='$2':fontcolor=white:fontsize=(w/${#2}):x=(w-text_w)/2:y=(h-text_h)*0.8$giffix" -codec:a copy "$3"
