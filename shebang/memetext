@@ -26,4 +26,6 @@ if [[ $1 == *.gif ]] && [[ $3 == *.gif ]]; then
     giffix=',split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse'
 fi
 
-ffmpeg -i "$1" -vf "drawtext=fontfile=$fontfile:text='$2':fontcolor=white:fontsize=(w/${#2}):x=(w-text_w)/2:y=(h-text_h)*0.8$giffix" -codec:a copy "$3"
+vf="drawtext=fontfile=$fontfile:text='$(echo $2 | sed "s/[':]//g")':fontcolor=white:x=(w-text_w)/2:y=(h-text_h)*0.8:fontsize=(w/${#2})$giffix"
+
+ffmpeg -i "$1" -vf "$vf" -codec:a copy "$3"
