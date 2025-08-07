@@ -23,7 +23,7 @@ elif [ ! -f "$1" ]; then
     >&2 echo "$1 is not a valid file"
     exit 3
 fi
-fps_variable="$(fps $1)"
+fps_variable="$(fps "$1")"
 timestamp="$(date +%s)"
 dir="/tmp/gif$timestamp"
 if ! mkdir "$dir"; then
