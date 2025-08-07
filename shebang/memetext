@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 fontfile='/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf'
 
