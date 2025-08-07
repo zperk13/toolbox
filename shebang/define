@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if ! is_command wn; then
+    >&2 echo 'define requires WordNet'
+    exit 1;
+fi
+
+if (( $# == 0 )); then
+    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf)"
+else
+    word="$@"
+fi
+
+wn "$word" -over
