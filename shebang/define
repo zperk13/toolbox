@@ -98,4 +98,7 @@ esac"
 
 echo -e "Overview\nAntonyms\nHypernyms (Noun/Verb)\nHyponym Tree (Noun)\nHypernym Tree (Verb)\nEntailment (Verb)\nSynonyms (Ordered by estimated frequency)\nSynonyms (Grouped by similarity of meaning) (Verb)\nHolonymns (Noun)\nMeronymns (Noun)\nCause To (Verb)\nPertainyms (Adjective/Adverb)\nAttributes (Noun/Adjective)\nDerived Forms (Noun/Verb)\nDomain\nDomain Terms\nFrames (Verb)\nCoordinate Terms (sisters) (Noun/Verb)" | fzf --reverse --preview "$script"  --bind "enter:execute($script > $tmp_file;)+abort"
 
-cat "$tmp_file"
+if [ -f "$tmp_file" ]; then
+    cat "$tmp_file"
+    rm "$tmp_file"
+fi
