@@ -6,9 +6,96 @@ if ! is_command wn; then
 fi
 
 if (( $# == 0 )); then
-    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf)"
+    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf --reverse --preview="wn {} -over")"
 else
     word="$@"
 fi
 
-wn "$word" -over
+# If not a terminal
+if ! [ -t 1 ]; then
+    wn "$word" -over
+    exit 0;
+fi
+
+tmp_file='/tmp/define_fzf_output'
+
+script="case {} in
+    Overview)
+        wn '$word' -over
+        ;;
+    Antonyms)
+        wn '$word' -antsn
+        wn '$word' -antsv
+        wn '$word' -antsa
+        wn '$word' -antsr
+        ;;
+    'Hypernyms (Noun/Verb)')
+        wn '$word' -hypen
+        wn '$word' -hypev
+        ;;
+    'Hyponym Tree (Noun)')
+        wn '$word' -treen
+        ;;
+    'Hypernym Tree (Verb)')
+        wn '$word' -treev
+        ;;
+    'Entailment (Verb)')
+        wn '$word' -entav
+        ;;
+    'Synonyms (Ordered by estimated frequency)')
+        wn '$word' -synsn
+        wn '$word' -synsv
+        wn '$word' -synsa
+        wn '$word' -synsr
+        ;;
+    'Synonyms (Grouped by similarity of meaning) (Verb)')
+        wn '$word' -simsv
+        ;;
+    'Holonymns (Noun)')
+        wn '$word' -holon
+        ;;
+    'Meronymns (Noun)')
+        wn '$word' -meron
+        ;;
+    'Cause To (Verb)')
+        wn '$word' -causv
+        ;;
+    'Pertainyms (Adjective/Adverb)')
+        wn '$word' -perta
+        wn '$word' -pertr
+        ;;
+    'Attributes (Noun/Adjective)')
+        wn '$word' -attrn
+        wn '$word' -attra
+        ;;
+    'Derived Forms (Noun/Verb)')
+        wn '$word' -derin
+        wn '$word' -deriv
+        ;;
+    Domain)
+        wn '$word' -domnn
+        wn '$word' -domnv
+        wn '$word' -domna
+        wn '$word' -domnr
+        ;;
+    'Domain Terms')
+        wn '$word' -domtn
+        wn '$word' -domtv
+        wn '$word' -domta
+        wn '$word' -domtr
+        ;;
+    'Frames (Verb)')
+        wn '$word' -framv
+        ;;
+    'Coordinate Terms (sisters) (Noun/Verb)')
+        wn '$word' -coorn
+        wn '$word' -coorv
+        ;;
+    *)
+        echo 'I did something wrong'
+        ;;
+esac"
+
+echo -e "Overview\nAntonyms\nHypernyms (Noun/Verb)\nHyponym Tree (Noun)\nHypernym Tree (Verb)\nEntailment (Verb)\nSynonyms (Ordered by estimated frequency)\nSynonyms (Grouped by similarity of meaning) (Verb)\nHolonymns (Noun)\nMeronymns (Noun)\nCause To (Verb)\nPertainyms (Adjective/Adverb)\nAttributes (Noun/Adjective)\nDerived Forms (Noun/Verb)\nDomain\nDomain Terms\nFrames (Verb)\nCoordinate Terms (sisters) (Noun/Verb)" | fzf --reverse --preview "$script"  --bind "enter:execute($script > $tmp_file;)+abort"
+
+cat "$tmp_file"
