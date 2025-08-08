@@ -103,6 +103,10 @@ esac"
 echo -e "Overview\nAntonyms\nHypernyms (Noun/Verb)\nHyponym Tree (Noun)\nHypernym Tree (Verb)\nEntailment (Verb)\nSynonyms (Ordered by estimated frequency)\nSynonyms (Grouped by similarity of meaning) (Verb)\nHolonymns (Noun)\nMeronymns (Noun)\nCause To (Verb)\nPertainyms (Adjective/Adverb)\nAttributes (Noun/Adjective)\nDerived Forms (Noun/Verb)\nDomain\nDomain Terms\nFrames (Verb)\nCoordinate Terms (sisters) (Noun/Verb)" | fzf --reverse --preview "$script"  --bind "enter:execute($script > $tmp_file;)+abort"
 
 if [ -f "$tmp_file" ]; then
-    cat "$tmp_file"
+    if is_command bat; then
+        bat -p "$tmp_file" # For auto-paging
+    else
+        cat "$tmp_file"
+    fi
     rm "$tmp_file"
 fi
