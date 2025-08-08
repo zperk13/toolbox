@@ -6,7 +6,7 @@ if ! is_command wn; then
 fi
 
 if (( $# == 0 )); then
-    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf --reverse --preview="wn {} -over")"
+    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf --reverse --preview="wn {} -over" --preview-window=wrap)"
 else
     word="$@"
 fi
@@ -100,7 +100,7 @@ script="case {} in
         ;;
 esac"
 
-echo -e "Overview\nAntonyms\nHypernyms (Noun/Verb)\nHyponym Tree (Noun)\nHypernym Tree (Verb)\nEntailment (Verb)\nSynonyms (Ordered by estimated frequency)\nSynonyms (Grouped by similarity of meaning) (Verb)\nHolonymns (Noun)\nMeronymns (Noun)\nCause To (Verb)\nPertainyms (Adjective/Adverb)\nAttributes (Noun/Adjective)\nDerived Forms (Noun/Verb)\nDomain\nDomain Terms\nFrames (Verb)\nCoordinate Terms (sisters) (Noun/Verb)" | fzf --reverse --preview "$script"  --bind "enter:execute($script > $tmp_file;)+abort"
+echo -e "Overview\nAntonyms\nHypernyms (Noun/Verb)\nHyponym Tree (Noun)\nHypernym Tree (Verb)\nEntailment (Verb)\nSynonyms (Ordered by estimated frequency)\nSynonyms (Grouped by similarity of meaning) (Verb)\nHolonymns (Noun)\nMeronymns (Noun)\nCause To (Verb)\nPertainyms (Adjective/Adverb)\nAttributes (Noun/Adjective)\nDerived Forms (Noun/Verb)\nDomain\nDomain Terms\nFrames (Verb)\nCoordinate Terms (sisters) (Noun/Verb)" | fzf --reverse --preview "$script" --preview-window=wrap --bind "enter:execute($script > $tmp_file;)+abort"
 
 if [ -f "$tmp_file" ]; then
     if is_command bat; then
