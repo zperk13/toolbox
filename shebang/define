@@ -11,6 +11,10 @@ else
     word="$@"
 fi
 
+if [ -z "$word" ]; then
+    exit 0;
+fi
+
 # If not a terminal
 if ! [ -t 1 ]; then
     wn "$word" -over
