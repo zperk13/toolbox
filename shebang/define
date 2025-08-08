@@ -21,75 +21,75 @@ tmp_file='/tmp/define_fzf_output'
 
 script="case {} in
     Overview)
-        wn '$word' -over
+        wn \"$word\" -over
         ;;
     Antonyms)
-        wn '$word' -antsn
-        wn '$word' -antsv
-        wn '$word' -antsa
-        wn '$word' -antsr
+        wn \"$word\" -antsn
+        wn \"$word\" -antsv
+        wn \"$word\" -antsa
+        wn \"$word\" -antsr
         ;;
     'Hypernyms (Noun/Verb)')
-        wn '$word' -hypen
-        wn '$word' -hypev
+        wn \"$word\" -hypen
+        wn \"$word\" -hypev
         ;;
     'Hyponym Tree (Noun)')
-        wn '$word' -treen
+        wn \"$word\" -treen
         ;;
     'Hypernym Tree (Verb)')
-        wn '$word' -treev
+        wn \"$word\" -treev
         ;;
     'Entailment (Verb)')
-        wn '$word' -entav
+        wn \"$word\" -entav
         ;;
     'Synonyms (Ordered by estimated frequency)')
-        wn '$word' -synsn
-        wn '$word' -synsv
-        wn '$word' -synsa
-        wn '$word' -synsr
+        wn \"$word\" -synsn
+        wn \"$word\" -synsv
+        wn \"$word\" -synsa
+        wn \"$word\" -synsr
         ;;
     'Synonyms (Grouped by similarity of meaning) (Verb)')
-        wn '$word' -simsv
+        wn \"$word\" -simsv
         ;;
     'Holonymns (Noun)')
-        wn '$word' -holon
+        wn \"$word\" -holon
         ;;
     'Meronymns (Noun)')
-        wn '$word' -meron
+        wn \"$word\" -meron
         ;;
     'Cause To (Verb)')
-        wn '$word' -causv
+        wn \"$word\" -causv
         ;;
     'Pertainyms (Adjective/Adverb)')
-        wn '$word' -perta
-        wn '$word' -pertr
+        wn \"$word\" -perta
+        wn \"$word\" -pertr
         ;;
     'Attributes (Noun/Adjective)')
-        wn '$word' -attrn
-        wn '$word' -attra
+        wn \"$word\" -attrn
+        wn \"$word\" -attra
         ;;
     'Derived Forms (Noun/Verb)')
-        wn '$word' -derin
-        wn '$word' -deriv
+        wn \"$word\" -derin
+        wn \"$word\" -deriv
         ;;
     Domain)
-        wn '$word' -domnn
-        wn '$word' -domnv
-        wn '$word' -domna
-        wn '$word' -domnr
+        wn \"$word\" -domnn
+        wn \"$word\" -domnv
+        wn \"$word\" -domna
+        wn \"$word\" -domnr
         ;;
     'Domain Terms')
-        wn '$word' -domtn
-        wn '$word' -domtv
-        wn '$word' -domta
-        wn '$word' -domtr
+        wn \"$word\" -domtn
+        wn \"$word\" -domtv
+        wn \"$word\" -domta
+        wn \"$word\" -domtr
         ;;
     'Frames (Verb)')
-        wn '$word' -framv
+        wn \"$word\" -framv
         ;;
     'Coordinate Terms (sisters) (Noun/Verb)')
-        wn '$word' -coorn
-        wn '$word' -coorv
+        wn \"$word\" -coorn
+        wn \"$word\" -coorv
         ;;
     *)
         echo 'I did something wrong'
