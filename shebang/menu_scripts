@@ -31,6 +31,13 @@ function minecraft {
 }
 
 function startup {
+    # Before launching Discord and Thunderbird, applications that require internet access, make sure there is internet access. Wait up to 5 seconds for it.
+    # (Stops waiting right away if there is a connection)
+    if ! nm-online -t 5; then
+        # If there isn't internet access even after 5 seconds
+        notify-send "Startup failed because of lack of internet access"
+        exit
+    fi
     i3-msg "workspace number 2;move workspace to $left_monitor"
     i3-msg "workspace number 1;move workspace to output $right_monitor;exec discord;exec thunderbird"
     i3-msg 'workspace number 2' # Workspace 2 is on the left, but the current workspace on the left monitor will be workspace 3. This makes workspace 2 the active workspace on the left monitor
