@@ -24,7 +24,7 @@ echo -e 'toolbox\t\t\t\tThis. Lists everything in your toolbox.'
 echo -e "transcribe\t\t\tCreate a trascript for a .wav file. If file isn't a .wav file, one will be created from the provided file."
 echo -e 'tstyle\t\t\t\tEasily style terminal output without having to remember ansi escape codes or tput codes. tstyle --help for more information'
 echo -e 'update\t\t\t\tUpdate Arch packages, Rust, Cargo packages, and Flatpak packages'
-echo -e 'update_baltro_mods\t\tUpdate lovely injector, steamodded, and Balatro multiplayer mod'
+echo -e 'update_balatro_mods\t\tUpdate lovely injector, steamodded, and Balatro multiplayer mod'
 echo -e 'update_mirrors\t\t\tRerank pacman mirrors'
 echo -e 'weather\t\t\t\tGet the weather'
 echo -e 'without_last_extension\t\tRemove the last extension of whatever is piped into it'
