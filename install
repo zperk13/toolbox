@@ -28,6 +28,10 @@ for file in ./shebang/*; do
     if ! head -n 1 "$file" | grep '^#!/usr/bin/env' > /dev/null; then
         echo -e "\t$yellow$name's shebang isn't #!/usr/bin/env$reset"
     fi
+
+    if ! grep "$name" ./shebang/toolbox --quiet; then
+        echo -e "\t$yellow$name doesn't seem to be listed in shebang/toolbox$reset"
+    fi
     
     link="/usr/local/bin/$name"
     if [ -h "$link" ]; then
@@ -56,6 +60,10 @@ for dir in ./rust/*; do
     fi
     if ! cargo install --path "$dir" --force; then
         echo "Failed to install $dir"
+    fi
+    bn="$(basename $dir)"
+    if ! grep "$bn" ./shebang/toolbox --quiet; then
+        echo -e "\t$yellow$bn doesn't seem to be listed in shebang/toolbox$reset"
     fi
 done
 
