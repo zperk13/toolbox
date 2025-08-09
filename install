@@ -63,7 +63,7 @@ for dir in ./rust/*; do
     fi
     bn="$(basename $dir)"
     if ! grep "$bn" ./shebang/toolbox --quiet; then
-        echo -e "\t$yellow$bn doesn't seem to be listed in shebang/toolbox$reset"
+        echo -e "$yellow$bn doesn't seem to be listed in shebang/toolbox$reset"
     fi
 done
 
