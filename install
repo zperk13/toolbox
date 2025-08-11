@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+shopt -s extglob
 
 reset="$(tput sgr0)"
 green="$(tput setaf 2)"
@@ -6,65 +7,81 @@ yellow="$(tput setaf 3)"
 blue="$(tput setaf 4)"
 cyan="$(tput setaf 6)"
 
+function yesno {
+    while true; do
+        read -p "$1" yn
+        case "$yn" in
+            [yY]?([eE][sS]) ) return 0 ;;
+            [nN]?([oO]) ) return 1 ;;
+        esac
+        echo "Invalid response"
+    done;
+}
+
 if [ "$0" != "./install" ]; then
     echo "${yellow}This script is meant to be run in its directory${reset}"
     exit 1
 fi
 
-echo "Symlinking everything in ${blue}shebang$reset to $blue/usr/local/bin$reset"
-for file in ./shebang/*; do
-    file=$(realpath "$file")
-    name=$(basename "$file")
-    if [ -d "$file" ]; then
-        echo -e "\t${yellow}Found a directory in shebang? Skipping ${blue}shebang/$name$reset"
-        continue
-    elif ! head -n 1 "$file" | grep '^#!' --quiet; then
-        echo -e "\t${yellow}shebang/$name doesn't start with a shebang. Skipping$reset"
-        continue
-    elif ! [ -x "$file" ]; then
-        chmod +x "$file"
-    fi
+if yesno "Would you like to install the shebangs? ";then
 
-    if ! head -n 1 "$file" | grep '^#!/usr/bin/env' --quiet; then
-        echo -e "\t$yellow$name's shebang isn't #!/usr/bin/env$reset"
-    fi
-
-    if ! grep "$name" ./shebang/toolbox --quiet; then
-        echo -e "\t$yellow$name doesn't seem to be listed in shebang/toolbox$reset"
-    fi
-    
-    link="/usr/local/bin/$name"
-    if [ -h "$link" ]; then
-        old_link=$(readlink -f "$link")
-        if [ "$old_link" == "$file" ]; then
-            echo -e "\t$cyan$name$green already installed$reset"
-        else
-            echo -e "\t$cyan$link$yellow already exists and does not link to the $green$name$yellow here. Skipping$reset"
+    echo "Symlinking everything in ${blue}shebang$reset to $blue/usr/local/bin$reset"
+    for file in ./shebang/*; do
+        file=$(realpath "$file")
+        name=$(basename "$file")
+        if [ -d "$file" ]; then
+            echo -e "\t${yellow}Found a directory in shebang? Skipping ${blue}shebang/$name$reset"
+            continue
+        elif ! head -n 1 "$file" | grep '^#!' --quiet; then
+            echo -e "\t${yellow}shebang/$name doesn't start with a shebang. Skipping$reset"
+            continue
+        elif ! [ -x "$file" ]; then
+            chmod +x "$file"
         fi
-    elif [ -e "$link" ]; then
-        echo -e "\t$yellow$link already exists and isn't a symlink. Skipping$reset"
-    else
-        if sudo ln -s "$file" "$link"; then
-            echo -e "\t${green}Linked $cyan$name$reset"
-        else
-            echo -e "\t${yellow} Failed to symlink $name$reset"
+
+        if ! head -n 1 "$file" | grep '^#!/usr/bin/env' --quiet; then
+            echo -e "\t$yellow$name's shebang isn't #!/usr/bin/env$reset"
         fi
-    fi
-done
 
-echo "Installing Rust tools..."
-for dir in ./rust/*; do
-    if [ -f "$dir" ]; then
-        echo "Found a file in rust? Skipping $dir."
-        continue
-    fi
-    if ! cargo install --path "$dir" --force; then
-        echo "Failed to install $dir"
-    fi
-    bn="$(basename $dir)"
-    if ! grep "$bn" ./shebang/toolbox --quiet; then
-        echo -e "$yellow$bn doesn't seem to be listed in shebang/toolbox$reset"
-    fi
-done
+        if ! grep "$name" ./shebang/toolbox --quiet; then
+            echo -e "\t$yellow$name doesn't seem to be listed in shebang/toolbox$reset"
+        fi
 
-echo "${green}Done. Make sure $blue~/.cargo/bin$green is in your \$PATH$reset"
+        link="/usr/local/bin/$name"
+        if [ -h "$link" ]; then
+            old_link=$(readlink -f "$link")
+            if [ "$old_link" == "$file" ]; then
+                echo -e "\t$cyan$name$green already installed$reset"
+            else
+                echo -e "\t$cyan$link$yellow already exists and does not link to the $green$name$yellow here. Skipping$reset"
+            fi
+        elif [ -e "$link" ]; then
+            echo -e "\t$yellow$link already exists and isn't a symlink. Skipping$reset"
+        else
+            if sudo ln -s "$file" "$link"; then
+                echo -e "\t${green}Linked $cyan$name$reset"
+            else
+                echo -e "\t${yellow} Failed to symlink $name$reset"
+            fi
+        fi
+    done
+fi
+
+if yesno "Would you like to install tools written in Rust? "; then
+    echo "Installing Rust tools..."
+    for dir in ./rust/*; do
+        if [ -f "$dir" ]; then
+            echo "Found a file in rust? Skipping $dir."
+            continue
+        fi
+        if ! cargo install --path "$dir" --force; then
+            echo "Failed to install $dir"
+        fi
+        bn="$(basename $dir)"
+        if ! grep "$bn" ./shebang/toolbox --quiet; then
+            echo -e "$yellow$bn doesn't seem to be listed in shebang/toolbox$reset"
+        fi
+    done
+
+    echo "${green}Done. Make sure $blue~/.cargo/bin$green is in your \$PATH$reset"
+fi
