@@ -9,7 +9,7 @@ file_number_line="$(find -type f | sort | grep -v :  | while read file; do
         else
             line="$(echo "$line" | cut -d'	' -f2-)"
         fi
-        echo -en "$(tstyle -t green)$file$(tstyle -t gray):$line_number:\t"
+        echo -en "$(tstyle -t green)$file$(tstyle -t gray):$line_number\t"
         # Separation so the line isn't affected by the -e. -n is to make it so the separation isn't visible
         echo "$(tstyle -t reset)$line"
     done
@@ -17,7 +17,7 @@ done | fzf --ansi --reverse)"
 
 if [ -n "$file_number_line" ]; then
     file="$(echo "$file_number_line" | cut -d':' -f1)"
-    number="$(echo "$file_number_line" | cut -d':' -f2)"
+    number="$(echo "$file_number_line" | cut -d':' -f2 | cut -f1)"
 
     nvim +$number $file
 fi
