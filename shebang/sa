@@ -9,7 +9,9 @@ file_number_line="$(find -type f | grep -v :  | while read file; do
     done
 done | fzf --ansi)"
 
-file="$(echo "$file_number_line" | cut -d':' -f1)"
-number="$(echo "$file_number_line" | cut -d':' -f2)"
+if [ -n "$file_number_line" ]; then
+    file="$(echo "$file_number_line" | cut -d':' -f1)"
+    number="$(echo "$file_number_line" | cut -d':' -f2)"
 
-nvim +$number $file
+    nvim +$number $file
+fi
