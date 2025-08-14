@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Can't use files with colons in the name since colons are used as separators, but I don't think this will negatively affect things often
+file_number_line="$(find -type f | grep -v :  | while read file; do
+    cat --number "$file" | while read line; do
+        line_number="$(echo "$line" | cut -d'	' -f1)"
+        line="$(echo "$line" | cut -d'	' -f2-)"
+        echo "$(tstyle -t green)$file$(tstyle -t gray):$line_number:$(tstyle -t reset)$line"
+    done
+done | fzf --ansi)"
+
+file="$(echo "$file_number_line" | cut -d':' -f1)"
+number="$(echo "$file_number_line" | cut -d':' -f2)"
+
+nvim +$number $file
