@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
+green="$(tstyle -t green)"
+gray="$(tstyle -t gray)"
+reset="$(tstyle -t reset)"
+
 # Can't use files with colons in the name since colons are used as separators, but I don't think this will negatively affect things often
 file_number_line="$(find -type f | sort | grep -v :  | while read file; do
     cat --number "$file" | while read line; do
         line_number="$(echo "$line" | cut -d'	' -f1)"
-        if is_command bat; then
-            line="$(bat --color=always --plain --line-range "$line_number" "$file")"
-        else
-            line="$(echo "$line" | cut -d'	' -f2-)"
-        fi
-        echo -en "$(tstyle -t green)$file$(tstyle -t gray):$line_number\t"
+        line="$(echo "$line" | cut -d'	' -f2-)"
+        echo -en "$green$file$gray:$line_number\t"
         # Separation so the line isn't affected by the -e. -n is to make it so the separation isn't visible
-        echo "$(tstyle -t reset)$line"
+        echo "$reset$line"
     done
 done | fzf --ansi --reverse)"
 
