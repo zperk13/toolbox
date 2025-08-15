@@ -7,11 +7,10 @@ reset="$(tstyle -t reset)"
 # Can't use files with colons in the name since colons are used as separators, but I don't think this will negatively affect things often
 file_number_line="$(find -type f | sort | grep -v :  | while read file; do
     cat --number "$file" | while read line; do
-        line_number="$(echo "$line" | cut -d'	' -f1)"
-        line="$(echo "$line" | cut -d'	' -f2-)"
-        echo -en "$green$file$gray:$line_number\t"
-        # Separation so the line isn't affected by the -e. -n is to make it so the separation isn't visible
-        echo "$reset$line"
+        readarray -d'	' array <<< "$line"
+        echo -en "$green$file$gray:${array[0]}"
+        # Separation so the line isn't affected by the -e. -n is to make it so the separation isn't visible. Second -n is because the readarray preserves the read newline
+        echo -n "$reset${array[*]:1}"
     done
 done | fzf --ansi --reverse)"
 
