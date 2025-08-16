@@ -6,7 +6,7 @@ reset="$(tstyle -t reset)"
 
 # Can't use files with colons in the name since colons are used as separators, but I don't think this will negatively affect things often
 file_number_line="$(find -type f -not -path '*/\.git/*' | sort | grep -v :  | while read file; do
-    cat --number "$file" | while read line; do
+    cat --number "$file" | while read -r line; do
         readarray -d'	' array <<< "$line"
         echo -en "$green$file$gray:${array[0]}"
         # Separation so the line isn't affected by the -e. -n is to make it so the separation isn't visible. Second -n is because the readarray preserves the read newline
