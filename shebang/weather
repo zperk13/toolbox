@@ -2,4 +2,4 @@
 if ! is_command curl; then
     >&2 echo 'weather requires curl'
 fi
-curl wttr.in/
+curl "wttr.in/$1"
