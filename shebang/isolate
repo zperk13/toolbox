@@ -13,7 +13,7 @@ magenta="$(tstyle -t magenta)"
 reset="$(tstyle -t reset)"
 
 # Go through all of those, remove duplicates ("abc.txt" and "abc.mp4" both become "abc")
-echo "$files_with_dots_without_dots" | uniq | while read uniq_file_start ; do
+echo "$files_with_dots_without_dots" | uniq | while read -r uniq_file_start ; do
     # Make directory with that file-extension-less name
     echo "Making directory ${blue}${bold}${uniq_file_start}${reset}";
     mkdir "$uniq_file_start";
@@ -25,7 +25,7 @@ echo "$files_with_dots_without_dots" | uniq | while read uniq_file_start ; do
     files_with_start=$(ls -p | grep -v / | grep --fixed-strings "$uniq_file_start");
 
     # iterate through those
-    echo "$files_with_start" | while read file ; do
+    echo "$files_with_start" | while read -r file ; do
 
         # make sure it actually starts with it
         sliced=${file:0:$len};

@@ -5,7 +5,7 @@ gray="$(tstyle -t gray)"
 reset="$(tstyle -t reset)"
 
 # Can't use files with colons in the name since colons are used as separators, but I don't think this will negatively affect things often
-file_number_line="$(find -type f -not -path '*/\.git/*' | sort | grep -v :  | while read file; do
+file_number_line="$(find . -type f -not -path '*/\.git/*' | sort | grep -v :  | while read -r file; do
     cat --number "$file" | while read -r line; do
         readarray -d'	' array <<< "$line"
         echo -n "$green$file$gray:${array[0]}$reset${array[*]:1}"
@@ -16,5 +16,5 @@ if [ -n "$file_number_line" ]; then
     file="$(echo "$file_number_line" | cut -d':' -f1)"
     number="$(echo "$file_number_line" | cut -d':' -f2 | cut -f1)"
 
-    nvim +$number "$file"
+    nvim +"$number" "$file"
 fi

@@ -31,4 +31,4 @@ if ! mkdir "$dir"; then
     exit 8
 fi
 ffmpeg -i "$1" "${dir}/frame%04d.png"
-gifski -o "${timestamp}.gif" --fps ${fps_variable} ${dir}/frame*.png
+gifski -o "${timestamp}.gif" --fps "${fps_variable}" ${dir}/frame*.png

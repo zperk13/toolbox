@@ -6,7 +6,7 @@ lovely_dir="$HOME/.local/share/Steam/steamapps/common/Balatro"
 function update_steamodded {
     local repo='Steamodded/smods'
 
-    cd "$mod_dir"
+    cd "$mod_dir" || exit 1
     local current_installed_version="$(ls | rg smods | sed 's/smods-//')"
     echo "Currently installed version of steamodded: $current_installed_version"
     local latest_released_version="$(github_latest_released_version "$repo")"
@@ -39,7 +39,7 @@ function update_lovely {
     local enabled_file_name='version.dll'
     local disabled_file_name='version.dll.disabled'
 
-    cd "$lovely_dir"
+    cd "$lovely_dir" || exit 1
     local current_installed_version="$(cat ./lovelyversion.txt)"
     echo "Currently installed version of lovely: $current_installed_version"
     local latest_released_version="$(github_latest_released_version "$repo")"
@@ -84,7 +84,7 @@ function update_multiplayer {
     local repo='Balatro-Multiplayer/BalatroMultiplayer'
     local download_asset_name='BalatroMultiplayer.zip'
 
-    cd "$mod_dir"
+    cd "$mod_dir" || exit 1
     local current_installed_version="$(cat "./BalatroMultiplayer/Multiplayer.json" | jq -r '.version')"
     echo "Currently installed version of the multiplayer mod: $current_installed_version"
     local latest_released_version="$(github_latest_released_version "$repo")"

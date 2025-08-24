@@ -31,7 +31,7 @@ for arg in "$@"; do
         if [ -f "$with_wav" ]; then
             file_to_transcribe="$with_wav"
         else
-            without_extension_with_wav="$(echo $arg | without_last_extension).wav"
+            without_extension_with_wav="$(echo "$arg" | without_last_extension).wav"
             if [ -f "$without_extension_with_wav" ]; then
                 file_to_transcribe="$without_extension_with_wav"
             else

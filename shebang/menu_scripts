@@ -22,9 +22,9 @@ function direwolf {
 
 function minecraft {
     local instance="$(ls -d ~/.local/share/PrismLauncher/instances/*/ | while IF= read -r dir; do
-        local name="$(echo $dir | sed 's/.\+instances\///' | sed 's/\/$//')"
-        printf "$name"
-        printf "\0icon\x1f${dir}minecraft/icon.png\n"
+        local name="$(echo "$dir" | sed 's/.\+instances\///' | sed 's/\/$//')"
+        printf "%s" "$name"
+        printf "\0icon\x1f%sminecraft/icon.png\n" "$dir"
     done | menu)"
     if [[ -z "$instance" ]]; then exit 0; fi
     prismlauncher --launch "$instance"
