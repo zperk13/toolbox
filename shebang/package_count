@@ -11,9 +11,9 @@ if is_command flatpak; then
 fi
 
 if is_command cargo; then
-    echo "Cargo Packages: $(cargo install --list | grep : | wc -l)"
+    echo "Cargo Packages: $(cargo install --list | grep --count :)"
 fi
 
 if is_command pipx; then
-    echo "pipx packages: $(pipx list | grep - | wc -l)"
+    echo "pipx packages: $(pipx list | grep --count -)"
 fi
