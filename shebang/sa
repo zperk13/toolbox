@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if ! is_command fzf; then
+    >&2 echo "sa requires fzf"
+fi
+
 green="$(tstyle -t green)"
 gray="$(tstyle -t gray)"
 reset="$(tstyle -t reset)"
