@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# ruff: noqa: PTH109,PTH123,PTH205,PTH208
 import gzip
 import os
 from datetime import datetime
 from string import ascii_letters
 
-logs_by_date = {}
+logs_by_date: dict[int, dict[int, dict[int, list[str]]]] = {}
 
 
 def add_log(contents: str, year: int, month: int, day: int) -> None:
@@ -29,10 +30,11 @@ for file_path in os.listdir(os.getcwd()):
             day = int(date[2])
             add_log(contents, year, month, day)
     elif file_path == "latest.log":
-        with open(file_path, "rb") as f:
-            contents = f.read().decode("utf-8", errors="replace")
-            date = datetime.fromtimestamp(os.path.getctime(file_path))
-            add_log(contents, date.year, date.month, date.day)
+        with open(file_path, "rb") as latest_log_file:
+            contents = latest_log_file.read().decode("utf-8", errors="replace")
+            # allow: ALL
+            dt = datetime.fromtimestamp(os.path.getctime(file_path)) # noqa: DTZ006
+            add_log(contents, dt.year, dt.month, dt.day)
 
 for year in sorted(logs_by_date.keys()):
     for month in sorted(logs_by_date[year].keys()):
