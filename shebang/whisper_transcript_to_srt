@@ -24,9 +24,8 @@ for line in sys.stdin:
         index += 1
         print(prev_start, "-->", prev_end)
         print(prev_text)
-        print(
-            flush=True
-        )  # flush isn't necessary but I prefer how it looks over the buffering cutting the output off right after the printing of the index and stuff
+        # flush isn't necessary but I prefer how it looks
+        print(flush=True)
 
     prev_start = start
     prev_end = end
