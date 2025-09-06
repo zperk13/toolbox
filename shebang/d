@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+dir=$(ls --no-quotes --only-dirs | fzf)
+if [ -n "$dir" ]; then
+    # This is basically the end of the function and it's not going to be called by other functions, so it's ok if cd fails here, if it even can
+    # shellcheck disable=SC2164
+    cd "$dir"
+fi
