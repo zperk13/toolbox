@@ -9,8 +9,8 @@ right_monitor='output DisplayPort-1'
 function balatro_mod {
     local dir="$HOME/.local/share/Steam/steamapps/common/Balatro"
     case "$(echo -e "Enable\nDisable" | menu 'Balatro Modloader')" in
-        Enable) mv "$dir/version.dll.disabled" "$dir/version.dll" ;;
-        Disable) mv "$dir/version.dll" "$dir/version.dll.disabled" ;;
+        Enable) mv "$dir/version.dll.disabled" "$dir/version.dll" && notify-send 'Balatro Modloader Enabled';;
+        Disable) mv "$dir/version.dll" "$dir/version.dll.disabled" && notify-send 'Balatro Modloader Disabled';;
         *) exit 1
     esac
 }
