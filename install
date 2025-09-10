@@ -85,3 +85,7 @@ if yesno "Would you like to install tools written in Rust? "; then
 
     echo "${green}Done. Make sure $blue~/.cargo/bin$green is in your \$PATH$reset"
 fi
+
+trash ./README.md
+cp ./README_BASE.md ./README.md
+./shebang/toolbox | sed 's/\(\S\+\)\t\+/- \1\n\t- /' >> ./README.md

@@ -3,3 +3,79 @@ Just a bunch of tools I wrote. Everything in [shebang](shebang) runs by itself w
 
 ## Git Cloning
 Use `--recursive` when git cloning since this repo has submodules. If you already cloned non-recursively, that's ok, just run `git submodule init && git submodule update`
+
+## Tools
+- archive
+	- zip a folder with maximum compression
+- clean
+	- Uninstall unused dependencies
+- d
+	- Open a fuzzy finder of dirs in the current dir, cd into selected one
+- define
+	- Interactive wrapper around Wordnet. Dictionary/Thesaurus/etc.
+- duration
+	- Get the duration of a file
+- edchat
+	- Watch Elite Dangerous logs for incoming chat messages and print them
+- fps
+	- Get the fps of a video
+- gif
+	- Turn a video into a gif
+- github_latest_released_version
+	- Gets the latest released version name of a github repo
+- is_command
+	- Has an exit code of 0 or 1 depending on if a command exists
+- isolate
+	- Go through all files in this folder, group together ones that are the same before the first . into their own folder
+- llc
+	- Live Line Count. Pipe output into it and count the lines as they appear. llc --help for more options
+- maintenance
+	- Update mirrors, system, vacuum old log files, remove cache. Run this every month or two.
+- mcchat
+	- Extract all chat messages from minecraft log files in the current directory
+- memetext
+	- Overlay text on top of media
+- menu_scripts
+	- Meant to be run via a keybind
+- moon
+	- Get the current phase of the moon
+- my_local_ip
+	- Print local ip
+- my_public_ip
+	- Print public ip
+- my_ip
+	- Print local & public ip
+- o
+	- File explorer only for opening
+- package_count
+	- Count how many packages you have from different package managers
+- resolution
+	- Get the resolution of a video
+- sa
+	- Search All. fzf the contents of all available files and open nvim on the selected line
+- sortlen
+	- Sort stdin lines from shortest to longest
+- sortlenrev
+	- Sort stdin lines from longest to shortest
+- store
+	- zip a folder without any compression
+- termsize
+	- Measure how many characters wide/tall your terminal is
+- toolbox
+	- This. Lists everything in your toolbox.
+- transcribe
+	- Create a trascript for a .wav file. If file isn't a .wav file, one will be created from the provided file.
+- tstyle
+	- Easily style terminal output without having to remember ansi escape codes or tput codes. tstyle --help for more information
+- update
+	- Update Arch packages, Rust, Cargo packages, and Flatpak packages
+- update_balatro_mods
+	- Update lovely injector, steamodded, and Balatro multiplayer mod
+- update_mirrors
+	- Rerank pacman mirrors
+- weather
+	- Get the weather
+- whisper_transcript_to_srt
+	- Should only be used by transcribe
+- without_last_extension
+	- Remove the last extension of whatever is piped into it
