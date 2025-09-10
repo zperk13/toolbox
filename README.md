@@ -9,8 +9,6 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- zip a folder with maximum compression
 - clean
 	- Uninstall unused dependencies
-- d
-	- Open a fuzzy finder of dirs in the current dir, cd into selected one
 - define
 	- Interactive wrapper around Wordnet. Dictionary/Thesaurus/etc.
 - duration
@@ -45,8 +43,6 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Print public ip
 - my_ip
 	- Print local & public ip
-- o
-	- File explorer only for opening
 - package_count
 	- Count how many packages you have from different package managers
 - resolution
