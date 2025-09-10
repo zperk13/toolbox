@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 while true; do
-    thing_to_open=$(ls -a | fzf --preview 'if [ -d {} ]; then eza -a --icons=always --color=always --group-directories-first --no-quotes {}; else bat --plain --color=always '{}'; fi')
+    thing_to_open=$(ls -a | grep -v '^\.$' | fzf --preview 'if [ -d {} ]; then eza -a --icons=always --color=always --group-directories-first --no-quotes {}; else bat --plain --color=always '{}'; fi')
     if (( $? != 0 )); then
         break;
     fi
