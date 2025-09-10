@@ -26,7 +26,7 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 - is_command
 	- Has an exit code of 0 or 1 depending on if a command exists
 - isolate
-	- Go through all files in this folder, group together ones that are the same before the first . into their own folder
+	- Go through all files in this folder, group together ones that are the same before the first non-starting . into their own folder
 - llc
 	- Live Line Count. Pipe output into it and count the lines as they appear. llc --help for more options
 - maintenance
