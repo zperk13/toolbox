@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# While this can convert non-gifs to gifs, results seem to be better if you use the gif command first
+
 fontfile='/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf'
 
 if ! [ -f "$fontfile" ]; then
