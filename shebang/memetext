@@ -52,7 +52,10 @@ if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
     f = f.split()
     f = f.video(1).paletteuse(f.video(0).palettegen())
 elif output_video_file.suffix == ".gif":
-    print("You'll want to use the gif command on the input file first, and use the output of that as the input for this")
+    print(
+        "You'll want to use the gif command on the input file first, and use the output of that as the input for this",
+        file=sys.stderr,
+    )
     sys.exit(7)
 f = f.copy().output(filename=output_video_file)
 print(f.run())
