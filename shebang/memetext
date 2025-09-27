@@ -1,33 +1,58 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# dependencies = ["typed-ffmpeg"]
+# ///
+import ffmpeg
+import argparse
+from pathlib import Path
+import sys
 
-# While this can convert non-gifs to gifs, results seem to be better if you use the gif command first
+argument_parser = argparse.ArgumentParser()
+_ = argument_parser.add_argument("input-video-file", type=Path)
+_ = argument_parser.add_argument("text")
+_ = argument_parser.add_argument("output-video-file", type=Path)
+_ = argument_parser.add_argument(
+    "--font-file",
+    nargs="?",
+    default=Path("/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf"),
+    type=Path,
+)
+args = vars(argument_parser.parse_args())
+input_video_file = args["input-video-file"]  # pyright: ignore[reportAny]
+if not isinstance(input_video_file, Path):
+    sys.exit(1)
+text = args["text"]  # pyright: ignore[reportAny]
+if not isinstance(text, str):
+    sys.exit(2)
+output_video_file = args["output-video-file"]  # pyright: ignore[reportAny]
+if not isinstance(output_video_file, Path):
+    sys.exit(3)
+font_file = args["font_file"]  # pyright: ignore[reportAny]
+if not isinstance(font_file, Path):
+    sys.exit(4)
 
-fontfile='/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf'
+if not font_file.exists():
+    print(f"{font_file} doesn't exist", file=sys.stderr)
+    sys.exit(5)
+if not input_video_file.exists():
+    print(f"{input_video_file} doesn't exist", file=sys.stderr)
+    sys.exit(6)
 
-if ! [ -f "$fontfile" ]; then
-    >&2 echo "Hardcoded font file path doesn't exist"
-    exit 1
-fi
-
-if ! is_command ffmpeg; then
-    >&2 echo 'memetext requires ffmpeg'
-    exit 2
-fi
-
-if (( $# != 3 )); then
-    >&2 echo "Expected 3 arguments (input file, text, output file), got $# arguments"
-    exit 3
-fi
-
-if ! [ -f "$1" ]; then
-    >&2 echo "First argument should be an existing file but it isn't"
-    exit 4
-fi
-
-if [[ $1 == *.gif ]] && [[ $3 == *.gif ]]; then
-    giffix=',split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse'
-fi
-
-vf="drawtext=fontfile=$fontfile:text='$(echo "$2" | sed "s/[':]//g")':fontcolor=white:x=(w-text_w)/2:y=(h-text_h)*0.8:fontsize=(w/${#2})$giffix"
-
-ffmpeg -i "$1" -vf "$vf" -codec:a copy "$3"
+text_len = len(text)
+f = ffmpeg.input(input_video_file).drawtext(
+    fontfile=str(font_file),
+    text=text,
+    fontcolor="white",
+    x="(w-text_w)/2",
+    y="(h-text_h)*0.8",
+    fontsize=f"(w/{text_len})",
+)
+if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
+    f = f.split()
+    f = f.video(1).paletteuse(f.video(0).palettegen())
+elif output_video_file.suffix == ".gif":
+    print("You'll want to use the gif command on the input file first, and use the output of that as the input for this")
+    sys.exit(7)
+f = f.copy().output(filename=output_video_file)
+print(f.run())
