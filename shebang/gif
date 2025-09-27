@@ -22,6 +22,9 @@ elif [ ! -f "$1" ]; then
 elif [ -f "$2" ]; then
     >&2 echo "$2 already exists"
     exit 8
+elif [[ "$1" == *.gif ]]; then
+    >&2 echo "$1 is already a .gif"
+    exit 9
 fi
 fps_variable="$(fps "$1")"
 timestamp="$(date +%s)"
