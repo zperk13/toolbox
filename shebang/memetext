@@ -18,6 +18,7 @@ _ = argument_parser.add_argument(
     default=Path("/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf"),
     type=Path,
 )
+_ = argument_parser.add_argument("--preserve-audio", action="store_true")
 args = vars(argument_parser.parse_args())
 input_video_file = args["input-video-file"]  # pyright: ignore[reportAny]
 if not isinstance(input_video_file, Path):
@@ -31,6 +32,9 @@ if not isinstance(output_video_file, Path):
 font_file = args["font_file"]  # pyright: ignore[reportAny]
 if not isinstance(font_file, Path):
     sys.exit(4)
+preserve_audio = args["preserve_audio"]  # pyright: ignore[reportAny]
+if not isinstance(preserve_audio, bool):
+    sys.exit(7)
 
 if not font_file.exists():
     print(f"{font_file} doesn't exist", file=sys.stderr)
@@ -40,7 +44,8 @@ if not input_video_file.exists():
     sys.exit(6)
 
 text_len = len(text)
-f = ffmpeg.input(input_video_file).drawtext(
+original = ffmpeg.input(input_video_file)
+video = original.drawtext(
     fontfile=str(font_file),
     text=text,
     fontcolor="white",
@@ -49,13 +54,15 @@ f = ffmpeg.input(input_video_file).drawtext(
     fontsize=f"(w/{text_len})",
 )
 if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
-    f = f.split()
-    f = f.video(1).paletteuse(f.video(0).palettegen())
+    video = video.split()
+    video = video.video(1).paletteuse(video.video(0).palettegen())
 elif output_video_file.suffix == ".gif":
     print(
         "You'll want to use the gif command on the input file first, and use the output of that as the input for this",
         file=sys.stderr,
     )
     sys.exit(7)
-f = f.copy().output(filename=output_video_file)
-print(f.run())
+if preserve_audio:
+    _ = video.output(original.acopy(), filename=output_video_file).run()
+else:
+    _ = video.output(filename=output_video_file).run()
