@@ -31,3 +31,7 @@ fi
 if is_command pipx; then
     pipx upgrade-all
 fi
+
+if is_command pnpm; then
+    pnpm update --global
+fi
