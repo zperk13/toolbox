@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -x # echo the commands are are being run
 
 if is_command eos-update; then
     if is_command yay; then
