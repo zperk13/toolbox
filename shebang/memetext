@@ -20,19 +20,19 @@ _ = argument_parser.add_argument(
 )
 _ = argument_parser.add_argument("--preserve-audio", action="store_true")
 args = vars(argument_parser.parse_args())
-input_video_file = args["input-video-file"]  # pyright: ignore[reportAny]
+input_video_file = args["input-video-file"]
 if not isinstance(input_video_file, Path):
     sys.exit(1)
-text = args["text"]  # pyright: ignore[reportAny]
+text = args["text"]
 if not isinstance(text, str):
     sys.exit(2)
-output_video_file = args["output-video-file"]  # pyright: ignore[reportAny]
+output_video_file = args["output-video-file"]
 if not isinstance(output_video_file, Path):
     sys.exit(3)
-font_file = args["font_file"]  # pyright: ignore[reportAny]
+font_file = args["font_file"]
 if not isinstance(font_file, Path):
     sys.exit(4)
-preserve_audio = args["preserve_audio"]  # pyright: ignore[reportAny]
+preserve_audio = args["preserve_audio"]
 if not isinstance(preserve_audio, bool):
     sys.exit(7)
 
