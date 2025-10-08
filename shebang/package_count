@@ -17,3 +17,7 @@ fi
 if is_command pipx; then
     echo "pipx packages: $(pipx list | grep --count -)"
 fi
+
+if is_command pnpm; then
+    echo "pnpm packages: $(pnpm list -g | grep --count @)"
+fi
