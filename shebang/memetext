@@ -7,6 +7,7 @@ import ffmpeg
 import argparse
 from pathlib import Path
 import sys
+import subprocess
 
 argument_parser = argparse.ArgumentParser()
 _ = argument_parser.add_argument("input-video-file", type=Path)
@@ -53,18 +54,16 @@ video = original.drawtext(
     y="(h-text_h)*0.8",
     fontsize=f"(w/{text_len})",
 )
+original_gif_filename = None
 if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
     video = video.split()
     video = video.video(1).paletteuse(video.video(0).palettegen())
 elif output_video_file.suffix == ".gif":
-    print(
-        """You'll want to use the gif command on the input file first,
-and use the output of that as the input for this,
-or use this to output to an mp4 or whatever, and use gif on that""",
-        file=sys.stderr,
-    )
-    sys.exit(7)
+    original_gif_filename = output_video_file
+    output_video_file = "/tmp/"+str(output_video_file)+".mp4"
 if preserve_audio:
     _ = video.output(original.acopy(), filename=output_video_file).run()
 else:
     _ = video.output(filename=output_video_file).run()
+if original_gif_filename is not None:
+    _ = subprocess.run(["gif", output_video_file, original_gif_filename], check=True)
