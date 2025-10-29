@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if ! is_command dunstctl; then
+    >&2 echo 'notification_history requires dunstctl'
+    exit 1
+elif ! is_command jq; then
+    >&2 echo 'notification_history requires jq'
+    exit 2
+elif ! is_command tput; then
+    >&2 echo 'notification_history requires tput'
+    exit 3
+elif ! is_command awk; then
+    >&2 echo 'notification_history requires awk'
+    exit 4
+fi
+
+width="$(tput cols)"
+divider="$(awk -v count="$width" 'BEGIN { OFS="="; $(count+1)=""; print }')"
+output="$(dunstctl history | jq -r '.data[0].[] | .message.data+"\n'"$divider"'"')"
+if is_command tstyle; then
+    bold="$(tstyle -t bold)"
+    reset="$(tstyle -t reset)"
+    output="${output//<b>/$bold}"
+    output="${output//<\/b>/$reset}"
+fi
+if is_command bat; then
+    echo "$output" | bat -p
+else
+    echo "$output"
+fi
