@@ -24,7 +24,7 @@ tail -f $HOME/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamus
         esac
         from="$(echo "$line" | jq -r ".From")"
         message="$(echo "$line" | jq -r ".Message")"
-        echo "$color[$channel] [$from]: $message$color_reset"
+        echo "${color}[$channel] [$from]: $message$color_reset"
     fi
 done
 
