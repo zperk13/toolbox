@@ -1,30 +1,102 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# dependencies = ["watchdog"]
+# ///
+from typing import override
+from watchdog.observers import Observer
+from watchdog.events import (
+    PatternMatchingEventHandler,
+    FileSystemEvent,
+    FileModifiedEvent,
+    FileCreatedEvent,
+)
+import argparse
+from pathlib import Path
+import sys
+import time
+import json
 
-if ! is_command jq; then
-    >&2 echo 'edchat reqiures jq'
-    exit 1;
-fi
+color_orange = "\033[38;5;208m"
+color_cyan = "\033[38;5;14m"
+color_green = "\033[38;5;14m"
+color_peach = "\033[38;5;215m"
+color_reset = "\033[0m"
 
-color_orange="$(tstyle -t 208)"
-color_wing="$(tstyle -t brightcyan)"
-color_squadron="$(tstyle -t brightgreen)"
-color_direct="$(tstyle -t 215)"
-color_reset="$(tstyle reset)"
+argument_parser = argparse.ArgumentParser()
+_ = argument_parser.add_argument(
+    "--journal-folder",
+    nargs="?",
+    type=Path,
+    default=Path.expanduser(
+        Path(
+            "~/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous/"
+        )
+    ),
+)
+args = vars(argument_parser.parse_args())
+journal_folder = args["journal_folder"]
+if not isinstance(journal_folder, Path):
+    sys.exit(1)
 
-tail -f $HOME/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved\ Games/Frontier\ Developments/Elite\ Dangerous/* 2>/dev/null | grep --line-buffered '"ReceiveText"' | while read -r line; do
-    if [ "$(echo "$line" | jq ".Message_Localised")" = "null" ]; then
-        channel_raw="$(echo "$line" | jq -r ".Channel")"
-        case "$channel_raw" in
-            wing) channel='WING';color="$color_wing" ;;
-            local) channel='LOCAL';color="$color_orange" ;;
-            squadron) channel='SQUADRON';color="$color_squadron" ;;
-            starsystem) channel='SYSTEM';color="$color_orange" ;;
-            player) channel='DIRECT';color="$color_direct" ;;
-            *) channel="$channel_raw";color=''; ;;
-        esac
-        from="$(echo "$line" | jq -r ".From")"
-        message="$(echo "$line" | jq -r ".Message")"
-        echo "${color}[$channel] [$from]: $message$color_reset"
-    fi
-done
 
+class EventHandler(PatternMatchingEventHandler):
+    seen_mesages: list[dict[str, str]] = []
+
+    def on_writing_event(self, event: FileModifiedEvent | FileCreatedEvent) -> None:
+        path = event.src_path
+        with open(path) as f:
+            for line in f:
+                line = json.loads(line)
+                if (
+                    line["event"] in ("ReceiveText", "SendText")
+                    and "Message_Localised" not in line
+                    and line not in self.seen_mesages
+                ):
+                    self.seen_mesages.append(line)
+                    message = line["Message"]
+                    channel = line[
+                        "Channel" if line["event"] == "ReceiveText" else "To"
+                    ]
+                    color = ""
+                    match channel:
+                        case "wing":
+                            channel = "WING"
+                            color = color_cyan
+                        case "local":
+                            channel = "LOCAL"
+                            color = color_orange
+                        case "squadron":
+                            channel = "SQUADRON"
+                            color = color_green
+                        case "starsystem":
+                            channel = "SYSTEM"
+                            color = color_orange
+                        case "player":
+                            channel = "DIRECT"
+                            color = color_peach
+                        case _:
+                            pass
+                    if line["event"] == "ReceiveText":
+                        sender = line["From"]
+                        print(f"{color}[{channel}] [{sender}]: {message}{color_reset}")
+                    else:
+                        print(
+                            f"{color_peach}To {color}[{channel}]: {message}{color_reset}"
+                        )
+
+    @override
+    def on_any_event(self, event: FileSystemEvent) -> None:
+        if isinstance(event, (FileModifiedEvent, FileCreatedEvent)):
+            self.on_writing_event(event)
+
+
+observer = Observer()
+_ = observer.schedule(EventHandler(patterns=["Journal*.log"]), str(journal_folder))
+observer.start()
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    observer.stop()
+observer.join()
