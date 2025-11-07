@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+import subprocess
+import json
+import argparse
+
+argument_parser = argparse.ArgumentParser()
+_ = argument_parser.add_argument("count", type=int)
+count = argument_parser.parse_args().count
+
+
+for notification in reversed(
+    json.loads(
+        subprocess.run(
+            ["dunstctl", "history"], check=True, stdout=subprocess.PIPE
+        ).stdout
+    )["data"][0][:count]
+):
+    command = ["dunstify", "--block"]
+
+    appname = notification["appname"]["data"]
+    if appname != "":
+        command.append(f"--appname={appname}")
+
+    category = notification["category"]["data"]
+    if category != "":
+        command.append(f"--category={category}")
+
+    urgency = notification["urgency"]["data"]
+    if urgency != "":
+        command.append(f"--urgency={urgency}")
+
+    notification_id = notification["id"]["data"]
+    command.append(f"--replace={notification_id}")
+
+    summary = notification["summary"]["data"]
+    command.append(summary)
+    body = notification["body"]["data"]
+    command.append(body)
+    _ = subprocess.run(
+        command,
+        check=True,
+    )

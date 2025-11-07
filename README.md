@@ -47,6 +47,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Dunst notification history
 - package_count
 	- Count how many packages you have from different package managers
+- resend_notification
+	- Resend the last n notifications from dunst, with each waiting to make sure you see them
 - resolution
 	- Get the resolution of a video
 - sa
