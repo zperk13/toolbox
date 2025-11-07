@@ -69,7 +69,7 @@ if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
     video = video.video(1).paletteuse(video.video(0).palettegen())
 elif output_video_file.suffix == ".gif":
     original_gif_filename = output_video_file
-    output_video_file = "/tmp/"+str(output_video_file)+".mp4"
+    output_video_file = "/tmp/" + str(output_video_file.name) + ".mp4"
     if original_gif_filename.exists():
         print(f"{original_gif_filename} already exists")
         sys.exit(9)
