@@ -2,19 +2,33 @@
 import subprocess
 import json
 import argparse
+from itertools import islice
 
 argument_parser = argparse.ArgumentParser()
 _ = argument_parser.add_argument("count", type=int)
 count = argument_parser.parse_args().count
 
-
-for notification in reversed(
-    json.loads(
+history = reversed(json.loads(
         subprocess.run(
             ["dunstctl", "history"], check=True, stdout=subprocess.PIPE
         ).stdout
-    )["data"][0][:count]
-):
+    )["data"][0])
+
+unique_notifications = []
+ids = []
+for notification in history:
+    notification_id = notification["id"]["data"]
+    if notification_id not in ids:
+        ids.append(notification_id)
+        unique_notifications.append(notification)
+
+recent_unique_notifications = reversed(unique_notifications)
+
+count_most_recent_unique_notifications = list(islice(recent_unique_notifications, count))
+
+chronological_count_most_recent_unique_notifications = reversed(count_most_recent_unique_notifications)
+
+for notification in chronological_count_most_recent_unique_notifications:
     command = ["dunstify", "--block"]
 
     appname = notification["appname"]["data"]
