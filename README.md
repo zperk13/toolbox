@@ -43,6 +43,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Print public ip
 - my_ip
 	- Print local & public ip
+- new_video_notif
+	- Get a notification whenever a new file appears in $HOME/Videos/
 - notification_history
 	- Dunst notification history
 - package_count
