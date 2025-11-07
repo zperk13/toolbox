@@ -70,9 +70,16 @@ if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
 elif output_video_file.suffix == ".gif":
     original_gif_filename = output_video_file
     output_video_file = "/tmp/"+str(output_video_file)+".mp4"
+    if original_gif_filename.exists():
+        print(f"{original_gif_filename} already exists")
+        sys.exit(9)
 if preserve_audio:
-    _ = video.output(original.acopy(), filename=output_video_file).run()
+    _ = video.output(original.acopy(), filename=output_video_file).run(
+        overwrite_output=original_gif_filename is not None
+    )
 else:
-    _ = video.output(filename=output_video_file).run()
+    _ = video.output(filename=output_video_file).run(
+        overwrite_output=original_gif_filename is not None
+    )
 if original_gif_filename is not None:
     _ = subprocess.run(["gif", output_video_file, original_gif_filename], check=True)
