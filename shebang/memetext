@@ -19,6 +19,12 @@ _ = argument_parser.add_argument(
     default=Path("/usr/share/fonts/OTF/ComicShannsMonoNerdFontPropo-Regular.otf"),
     type=Path,
 )
+_ = argument_parser.add_argument(
+    "--font-color",
+    nargs="?",
+    default="white",
+    type=str,
+)
 _ = argument_parser.add_argument("--preserve-audio", action="store_true")
 args = vars(argument_parser.parse_args())
 input_video_file = args["input-video-file"]
@@ -36,6 +42,9 @@ if not isinstance(font_file, Path):
 preserve_audio = args["preserve_audio"]
 if not isinstance(preserve_audio, bool):
     sys.exit(7)
+font_color = args["font_color"]
+if not isinstance(font_color, str):
+    sys.exit(8)
 
 if not font_file.exists():
     print(f"{font_file} doesn't exist", file=sys.stderr)
@@ -49,7 +58,7 @@ original = ffmpeg.input(input_video_file)
 video = original.drawtext(
     fontfile=str(font_file),
     text=text,
-    fontcolor="white",
+    fontcolor=font_color,
     x="(w-text_w)/2",
     y="(h-text_h)*0.8",
     fontsize=f"(w/{text_len})",
