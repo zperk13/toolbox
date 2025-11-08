@@ -17,11 +17,23 @@ elif ! is_command cut; then
     exit 5;
 fi
 
-inotifywait --monitor --recursive --quiet --format '%w%f' --event close_write "$HOME/Videos/" | while read -r file_path; do
-    file_size="$(du -kh "$file_path" | cut -f1)"
-    file_duration="$(duration "$file_path")"
-    out="Path: $file_path\nSize: $file_size\nDuration: $file_duration"
-    echo -e "$out"
+inotifywait --monitor --recursive --quiet --format "%e %w%f" --event close_write --event create "$HOME/Videos/" | while read -r line; do
+    event="$(echo "$line" | cut -d' ' -f1)"
+    file_path="$(echo "$line" | cut -d' ' -f2-)"
+    case "$event" in 
+        *CREATE*)
+            title="Saving Replay"
+            body="Path: $file_path"
+            ;;
+        *CLOSE_WRITE*)
+            title="Replay Saved"
+            file_size="$(du -kh "$file_path" | cut -f1)"
+            file_duration="$(duration "$file_path")"
+            body="Path: $file_path\nSize: $file_size\nDuration: $file_duration"
+            ;;
+    esac
+    echo "$title"
+    echo -e "$body"
     echo
-    notify-send "New Video Detected" "$out"
+    notify-send "$title" "$body"
 done
