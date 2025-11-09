@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+if ! is_command inotifywait; then
+    >&2 echo "new_video_notif requires inotifywait"
+    exit 1;
+elif ! is_command notify-send; then
+    >&2 echo "new_video_notif requires notify-send"
+    exit 2;
+elif ! is_command duration; then
+    >&2 echo "new_video_notif requires duration, which is in the same toolbox as this script"
+    exit 3;
+elif ! is_command du; then
+    >&2 echo "new_video_notif requires du"
+    exit 4;
+elif ! is_command cut; then
+    >&2 echo "new_video_notif requires cut"
+    exit 5;
+fi
+
+obs_replay_path="$HOME/Videos/OBS/"
+
+inotifywait --monitor --recursive --quiet --format "%e %w%f" --event close_write --event create "$obs_replay_path" | while read -r line; do
+    event="$(echo "$line" | cut -d' ' -f1)"
+    file_path="$(echo "$line" | cut -d' ' -f2-)"
+    if [[ "$file_path" == *'Replay'* ]]; then
+        case "$event" in 
+            *CREATE*)
+                title="Saving Replay"
+                body="Path: $file_path"
+                ;;
+            *CLOSE_WRITE*)
+                title="Replay Saved"
+                file_size="$(du -kh "$file_path" | cut -f1)"
+                file_duration="$(duration "$file_path")"
+                body="Path: $file_path\nSize: $file_size\nDuration: $file_duration"
+                ;;
+        esac
+        echo "$title"
+        echo -e "$body"
+        echo
+        notify-send "$title" "$body"
+    fi
+done
