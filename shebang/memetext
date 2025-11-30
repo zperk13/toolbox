@@ -25,6 +25,13 @@ _ = argument_parser.add_argument(
     default="white",
     type=str,
 )
+_ = argument_parser.add_argument(
+    "--text-size-multiplier",
+    nargs="?",
+    default=1.0,
+    type=float,
+)
+
 _ = argument_parser.add_argument("--preserve-audio", action="store_true")
 args = vars(argument_parser.parse_args())
 input_video_file = args["input-video-file"]
@@ -45,6 +52,9 @@ if not isinstance(preserve_audio, bool):
 font_color = args["font_color"]
 if not isinstance(font_color, str):
     sys.exit(8)
+text_size_multiplier = args["text_size_multiplier"]
+if not isinstance(text_size_multiplier, float):
+    sys.exit(9)
 
 if not font_file.exists():
     print(f"{font_file} doesn't exist", file=sys.stderr)
@@ -61,7 +71,7 @@ video = original.drawtext(
     fontcolor=font_color,
     x="(w-text_w)/2",
     y="(h-text_h)*0.8",
-    fontsize=f"(w/{text_len})",
+    fontsize=f"(w/{text_len}*1.5*{text_size_multiplier})",
 )
 original_gif_filename = None
 if input_video_file.suffix == ".gif" and output_video_file.suffix == ".gif":
