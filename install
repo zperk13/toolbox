@@ -58,6 +58,9 @@ if yesno "Would you like to install the shebangs? ";then
         elif [ -e "$link" ]; then
             echo -e "\t$yellow$link already exists and isn't a symlink. Skipping$reset"
         else
+            if ! sudo -n true 2>/dev/null; then
+                echo -e "\t${green}Permission needed to link $name$reset"
+            fi
             if sudo ln -s "$file" "$link"; then
                 echo -e "\t${green}Linked $cyan$name$reset"
             else
