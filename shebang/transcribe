@@ -21,24 +21,37 @@ for arg in "$@"; do
 done
 
 for arg in "$@"; do
-
+    should_delete=false
     file_to_transcribe="$arg"
+    output_file="$arg.srt"
 
     # If last 4 characters aren't ".wav"
     if [ "${arg: -4}" != '.wav' ]; then
         with_wav="$arg.wav"
         # -f checks if a file exists
         if [ -f "$with_wav" ]; then
+            output_file="$arg.wav.srt"
             file_to_transcribe="$with_wav"
         else
             without_extension_with_wav="$(echo "$arg" | without_last_extension).wav"
             if [ -f "$without_extension_with_wav" ]; then
                 file_to_transcribe="$without_extension_with_wav"
+                output_file="$without_extension_with_wav.srt"
             else
-                ffmpeg -i "$arg" "$with_wav"
-                file_to_transcribe="$with_wav"
+                rp="$(realpath "$arg")"
+                if [[ "$rp" != /tmp/* ]]; then
+                    should_delete=true
+                    with_wav="/tmp/$(basename "$rp").wav"
+                    file_to_transcribe="$with_wav"
+                fi
+                if [ ! -f "$with_wav" ]; then
+                    ffmpeg -i "$arg" "$with_wav"
+                fi
             fi
         fi
     fi
-    whisper-cli --model "$HOME/whisper.cpp models/ggml-large-v3-turbo.bin" "$file_to_transcribe" | whisper_transcript_to_srt | tee "$file_to_transcribe.srt"
+    whisper-cli --model "$HOME/whisper.cpp models/ggml-large-v3-turbo.bin" "$file_to_transcribe" | whisper_transcript_to_srt | tee "$output_file"
+    if [ $should_delete = true ]; then
+        rm "$file_to_transcribe"
+    fi
 done
