@@ -11,6 +11,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Uninstall unused dependencies
 - define
 	- Interactive wrapper around Wordnet. Dictionary/Thesaurus/etc.
+- dl
+	- yt-dlp+chat_downloader+transcribe
 - duration
 	- Get the duration of a file
 - edchat

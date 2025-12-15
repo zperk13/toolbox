@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+if ! is_command yt-dlp; then
+    >&2 echo "dl requires yt-dlp"
+    exit 1
+fi
+
+if [ ! -w . ]; then
+    >&2 echo "You do not have write permission in this directory"
+    exit 2
+fi
+
+for arg in "$@"; do
+    should_transcribe=false
+    if ! yt-dlp --write-auto-subs --write-subs "$arg"; then
+        yt-dlp "$arg"
+        should_transcribe=true
+    fi
+    filename="$(yt-dlp -i --get-filename --skip-download "$arg")"
+    count="$(echo -e "$filename" | wc -l)"
+    if (( count < 2 )); then
+        # https://github.com/xenova/chat-downloader with patches found in issues
+        if is_command chat_downloader; then
+            tee_file="$(echo "$filename" | without_last_extension ).chat.txt"
+            chat_downloader "$arg" | tee "$tee_file"
+            if [ ! -s "$tee_file" ]; then
+                rm "$tee_file"
+            fi
+        fi
+    fi
+
+    if [ "$should_transcribe" = true ]; then
+        echo -e "$filename" | while read -r line; do
+            transcribe "$line"
+        done
+    fi
+done

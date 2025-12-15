@@ -2,6 +2,7 @@
 echo -e 'archive\t\t\t\tzip a folder with maximum compression'
 echo -e 'clean\t\t\t\tUninstall unused dependencies'
 echo -e 'define\t\t\t\tInteractive wrapper around Wordnet. Dictionary/Thesaurus/etc.'
+echo -e 'dl\t\t\t\tyt-dlp+chat_downloader+transcribe'
 echo -e 'duration\t\t\tGet the duration of a file'
 echo -e 'edchat\t\t\t\tWatch Elite Dangerous logs for incoming chat messages and print them'
 echo -e 'fps\t\t\t\tGet the fps of a video'
