@@ -47,6 +47,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Print local & public ip
 - notification_history
 	- Dunst notification history
+- nsu
+	- Non-sequential uniq. Like sort -u but it doesn't require reading the whole thing
 - obs_replay_notif
 	- Get a notification whenever a new file appears in $HOME/Videos/
 - package_count

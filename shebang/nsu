@@ -1,0 +1,12 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+$|++;
+
+my %seen; 
+
+while ( <> ) { 
+    print unless $seen{$_}++; 
+}
