@@ -1,9 +1,11 @@
 #!/usr/bin/env perl
 
+# Other than the autoflush, this is just https://unix.stackexchange.com/a/210527
+
 use strict;
 use warnings;
 
-$|++;
+$|++; # autoflush https://stackoverflow.com/a/33812689/
 
 my %seen; 
 
