@@ -51,6 +51,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Non-sequential uniq. Like sort -u but it doesn't require reading the whole thing
 - obs_replay_notif
 	- Get a notification whenever a new file appears in $HOME/Videos/
+- on_ratsignal
+	- Script that's called when a ratsignal is sent
 - package_count
 	- Count how many packages you have from different package managers
 - resend_notification

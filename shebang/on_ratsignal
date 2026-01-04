@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+body="$3"
+
+system="$(echo "$body" | sed 's/&quot;/"/g' | grep -o 'System: "[^"]\+"' | grep -o '".\+' | grep -o '[^"]\+')"
+echo "$system" | xclip -selection clipboard
+spd-say -w "rat signal"
+
+if echo "$body" | grep ODY_SIGNAL; then
+    spd-say -w "odyssey"
+elif echo "$body" | grep HOR_SIGNAL; then
+    spd-say -w "horizons"
+    notify-send -t 0 'If you switch to Horizons, DM MechaSqueak' '!mymode hor'
+else
+    spd-say -w "script error"
+    exit
+fi
+
+if echo "$body" | grep 'Code Red'; then
+    spd-say -w "code red"
+fi
+
+# My setup pronounces "Sol" wrong
+distance="$(echo "$body" | grep -o '[0-9.]\+ LY from [^)]\+' | sed 's/LY/light years/' | sed 's/from Sol$/from soul/')"
+if [ -n "$distance" ]; then
+    spd-say -w "$distance"
+fi
+
+language="$(echo "$body" | grep -o 'Language: [^(]\+' | sed 's/:/ is/')"
+spd-say -w "$language"
+
+# "copied" sounded like "cop ed" with my setup, "coppeed" sounds better
+spd-say "System \"$system\" has been coppeed to clipboard"
