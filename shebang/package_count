@@ -15,7 +15,7 @@ if is_command cargo; then
 fi
 
 if is_command pipx; then
-    echo "pipx packages: $(pipx list | grep --count -)"
+    echo "pipx packages: $(pipx list | grep --count '^\s*-')"
 fi
 
 if is_command pnpm; then
