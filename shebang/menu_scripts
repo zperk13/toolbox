@@ -24,6 +24,15 @@ function direwolf {
     i3-msg "workspace number 3;move workspace to $left_monitor;exec prismlauncher --launch 'FTB StoneBlock 4'"
 }
 
+function _kill {
+    local pid
+    pid="$(ps a --no-headers --user "$(whoami)" --format=pid,comm,args --sort=comm | menu | awk '{print $1}')"
+    if [[ -z "$pid" ]]; then exit 0; fi
+    notify-send "Killing $pid"
+    kill "$pid"
+    notify-send "Killed $pid"
+}
+
 function minecraft {
     local instance="$(ls -d ~/.local/share/PrismLauncher/instances/*/ | while IF= read -r dir; do
         local name="$(echo "$dir" | sed 's/.\+instances\///' | sed 's/\/$//')"
@@ -37,6 +46,13 @@ function minecraft {
 function resend_notif {
     count="$(text_input "How many notifications?")"
     resend_notification "$count"
+}
+
+function runtime {
+    local runtime_info
+    runtime_info="$(ps a --no-headers --user "$(whoami)" --format=pid,comm,args,start_time,etime --sort=comm | menu | awk '{print $(NF-1) " " $NF}')"
+    if [[ -z "$runtime_info" ]]; then exit 0; fi
+    notify-send "$(echo "$runtime_info" | awk '{print $1}')" "$(echo "$runtime_info" | awk '{print $2}' | sed 's/-/ days /')"
 }
 
 function startup {
@@ -72,13 +88,15 @@ function timer {
     fi
 }
 
-case "$(echo -e "Balatro Modloader\ndirewolf20\nMinecraft\nResend Notifications\nSocial Media\nStartup\nTimer" | menu)" in
+case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifications\nRuntime\nSocial Media\nStartup\nTimer" | menu)" in
     'Balatro Modloader') balatro_mod ;;
     direwolf20) direwolf ;;
     Minecraft) minecraft ;;
     'Resend Notifications') resend_notif ;;
+    Runtime) runtime ;;
     'Social Media') socialmedia ;;
     Startup) startup ;;
     Timer) timer ;;
+    'kill') _kill ;;
     *) exit 1
 esac
