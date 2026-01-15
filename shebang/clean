@@ -2,6 +2,7 @@
 set -x # echo the commands are are being run
 if is_command yay; then
     yay -Yc
+    yay -Sc
 fi
 if is_command flatpak; then
     flatpak uninstall --unused
