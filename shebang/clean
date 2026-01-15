@@ -1,5 +1,17 @@
 #!/usr/bin/env sh
 set -x # echo the commands are are being run
+
+disk() {
+    if is_command dysk; then
+        # Default cols is fs+type+disk+used+use+free+size+mp
+        dysk --cols=fs+used+use+free+size+mp
+    elif is_command df; then
+        df --human-readable --exclude-type=tmpfs --total
+    fi
+}
+
+disk
+
 if is_command yay; then
     yay -Yc
     yay -Sc
@@ -11,3 +23,5 @@ if is_command paccache; then
     paccache --remove --uninstalled --keep 0
     paccache --remove --keep 3
 fi
+
+disk
