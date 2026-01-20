@@ -20,7 +20,7 @@ function balatro_mod {
 }
 
 function direwolf {
-    i3-msg "workspace number 2;move workspace to $right_monitor;exec firefox https://www.youtube.com/@direwolf20/videos"
+    i3-msg "workspace number 2;move workspace to $right_monitor;exec waterfox https://www.youtube.com/@direwolf20/videos"
     i3-msg "workspace number 3;move workspace to $left_monitor;exec prismlauncher --launch 'FTB StoneBlock 4'"
 }
 
@@ -71,7 +71,7 @@ function startup {
 
 
 function socialmedia {
-    firefox -new-tab 'https://www.facebook.com/?sk=h_chr' -new-tab 'https://mastodon.sdf.org/home' -new-tab 'https://bsky.app/' &
+    waterfox -new-tab 'https://www.facebook.com/?sk=h_chr' -new-tab 'https://mastodon.sdf.org/home' -new-tab 'https://bsky.app/' &
 }
 
 function timer {
