@@ -55,6 +55,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Script that's called when a ratsignal is sent
 - package_count
 	- Count how many packages you have from different package managers
+- pacmanfzf
+	- pacman -Q + fzf
 - resend_notification
 	- Resend the last n notifications from dunst, with each waiting to make sure you see them
 - resolution

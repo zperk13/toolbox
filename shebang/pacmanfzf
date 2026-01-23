@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if ! is_command pacman; then
+    >&2 echo 'pacmanfzf requires pacman'
+    exit 1;
+elif ! is_command fzf; then
+    >&2 echo 'pacmanfzf requires fzf'
+    exit 2;
+fi
+
+package="$(pacman -Qq | fzf --ignore-case --reverse --preview-window=wrap --cycle --preview='pacman -Qi {}')"
+if [ -z "$package" ]; then
+    exit 0;
+fi
+pacman -Qi "$package"

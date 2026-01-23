@@ -24,6 +24,7 @@ echo -e 'nsu\t\t\t\tNon-sequential uniq. Like sort -u but it doesn'"'"'t require
 echo -e 'obs_replay_notif\t\tGet a notification whenever a new file appears in $HOME/Videos/'
 echo -e 'on_ratsignal\t\t\tScript that'"'"'s called when a ratsignal is sent'
 echo -e 'package_count\t\t\tCount how many packages you have from different package managers'
+echo -e 'pacmanfzf\t\t\tpacman -Q + fzf'
 echo -e 'resend_notification\t\tResend the last n notifications from dunst, with each waiting to make sure you see them'
 echo -e 'resolution\t\t\tGet the resolution of a video'
 echo -e 'sa\t\t\t\tSearch All. fzf the contents of all available files and open nvim on the selected line'
