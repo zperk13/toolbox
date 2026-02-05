@@ -91,12 +91,12 @@ function timer {
 case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifications\nRuntime\nSocial Media\nStartup\nTimer" | menu)" in
     'Balatro Modloader') balatro_mod ;;
     direwolf20) direwolf ;;
+    'kill') _kill ;;
     Minecraft) minecraft ;;
     'Resend Notifications') resend_notif ;;
     Runtime) runtime ;;
     'Social Media') socialmedia ;;
     Startup) startup ;;
     Timer) timer ;;
-    'kill') _kill ;;
     *) exit 1
 esac
