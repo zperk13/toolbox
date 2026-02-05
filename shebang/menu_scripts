@@ -88,7 +88,11 @@ function timer {
     fi
 }
 
-case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifications\nRuntime\nSocial Media\nStartup\nTimer" | menu)" in
+function xcompose {
+    grep --no-filename '^<Multi_key>' /usr/share/X11/locale/en_US.UTF-8/Compose ~/.XCompose | sed -e 's/<Multi_key> <//' -e 's/\s\+/ /g' -e 's/> </ /g' -e 's/> :/:/'| menu | grep -o '"."' | grep -o '[^"]' | xclip -selection clipboard
+}
+
+case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifications\nRuntime\nSocial Media\nStartup\nTimer\nXCompose" | menu)" in
     'Balatro Modloader') balatro_mod ;;
     direwolf20) direwolf ;;
     'kill') _kill ;;
@@ -98,5 +102,6 @@ case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifica
     'Social Media') socialmedia ;;
     Startup) startup ;;
     Timer) timer ;;
+    XCompose) xcompose ;;
     *) exit 1
 esac
