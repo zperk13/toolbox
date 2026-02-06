@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
+bold_underline="$(tstyle -t bold underline)"
+reset="$(tstyle -t reset)"
+dim="$(tstyle -t dim)"
+highlight="$(tstyle -t 'fg=#ffffff;bg=gray')"
 if is_command pacman; then
-    echo "Native Explicit Arch Packages: $(pacman -Qne | wc -l)"
-    echo "Native Dependency Arch Packages: $(pacman -Qnd | wc -l)"
-    echo "AUR Packages: $(pacman -Qm | wc -l)"
+    echo "${bold_underline}Pacman:$reset"
+    echo -e "\tNative Explicit Arch Packages: $(pacman -Qne | wc -l)"
+    echo -e "\tNative Dependency Arch Packages: $(pacman -Qnd | wc -l)"
+    echo -e "\tAUR Packages: $(pacman -Qm | wc -l)"
+    if is_command yay; then
+        echo -e "\t$dim(You can do ${highlight}yay -Ps$reset$dim to get more stats about pacman packages)$reset"
+    fi
 fi
 
 if is_command flatpak; then
-    echo "Flatpak Apps: $(flatpak list --app | wc -l)"
-    echo "Flatpak Runtimes: $(flatpak list --runtime | wc -l)"
+    echo "${bold_underline}Flatpak:$reset"
+    echo -e "\tFlatpak Apps: $(flatpak list --app | wc -l)"
+    echo -e "\tFlatpak Runtimes: $(flatpak list --runtime | wc -l)"
 fi
 
 if is_command cargo; then
