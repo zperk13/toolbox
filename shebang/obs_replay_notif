@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
 if ! is_command inotifywait; then
-    >&2 echo "new_video_notif requires inotifywait"
+    >&2 echo "obs_replay_notif requires inotifywait"
     exit 1;
 elif ! is_command notify-send; then
-    >&2 echo "new_video_notif requires notify-send"
+    >&2 echo "obs_replay_notif requires notify-send"
     exit 2;
 elif ! is_command duration; then
-    >&2 echo "new_video_notif requires duration, which is in the same toolbox as this script"
+    >&2 echo "obs_replay_notif requires duration, which is in the same toolbox as this script"
     exit 3;
 elif ! is_command du; then
-    >&2 echo "new_video_notif requires du"
+    >&2 echo "obs_replay_notif requires du"
     exit 4;
 elif ! is_command cut; then
-    >&2 echo "new_video_notif requires cut"
+    >&2 echo "obs_replay_notif requires cut"
     exit 5;
 fi
 
