@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
+echo -n "Local IPv4 Address: "
 my_local_ip
 my_public_ip

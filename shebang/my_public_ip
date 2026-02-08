@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
-if ! is_command curl; then
-    >&2 'my_public_ip requires curl'
+if ! is_command dig; then
+    >&2 'my_public_ip requires dig'
     exit 1
 fi
-curl --silent https://checkip.amazonaws.com
+echo "Public IPv4 Address: $(dig @1.1.1.1 whoami.cloudflare ch txt +short | sed 's/"//g')"
+echo "Public IPv6 Address: $(dig @2606:4700:4700::1111 whoami.cloudflare ch txt -6 +short | sed 's/"//g')"
