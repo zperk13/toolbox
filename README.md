@@ -80,7 +80,7 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 - tstyle
 	- Easily style terminal output without having to remember ansi escape codes or tput codes. tstyle --help for more information
 - update
-	- Update Arch packages, Rust, Cargo packages, and Flatpak packages
+	- Update Arch/Cargo/Flatpak/pipx/pnpm packages, and Rust
 - update_balatro_mods
 	- Update lovely injector, steamodded, and Balatro multiplayer mod
 - update_mirrors
