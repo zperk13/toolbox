@@ -33,7 +33,7 @@ for notification in chronological_count_most_recent_unique_notifications:
 
     appname = notification["appname"]["data"]
     if appname != "":
-        command.append(f"--appname={appname}")
+        command.append(f"--app-name={appname}")
 
     category = notification["category"]["data"]
     if category != "":
