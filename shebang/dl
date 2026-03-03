@@ -11,27 +11,21 @@ if [ ! -w . ]; then
 fi
 
 for arg in "$@"; do
-    should_transcribe=false
     if ! yt-dlp --write-auto-subs --write-subs "$arg"; then
         yt-dlp "$arg"
-        should_transcribe=true
     fi
-    filename="$(yt-dlp -i --get-filename --skip-download "$arg")"
-    count="$(echo -e "$filename" | wc -l)"
-    if (( count < 2 )); then
-        # https://github.com/xenova/chat-downloader with patches found in issues
+    yt-dlp -i --get-filename --skip-download "$arg" | while read -r filename; do
         if is_command chat_downloader; then
-            tee_file="$(echo "$filename" | without_last_extension ).chat.txt"
+            # https://github.com/xenova/chat-downloader with patches found in issues
+            wle="$(echo "$filename" | without_last_extension)"
+            tee_file="$wle.chat.txt"
             chat_downloader "$arg" | tee "$tee_file"
             if [ ! -s "$tee_file" ]; then
                 rm "$tee_file"
             fi
         fi
-    fi
-
-    if [ "$should_transcribe" = true ]; then
-        echo -e "$filename" | while read -r line; do
-            transcribe "$line"
-        done
-    fi
+        if ! ls "$wle.en"* 1>/dev/null 2>&1; then
+            transcribe "$filename"
+        fi
+    done
 done
