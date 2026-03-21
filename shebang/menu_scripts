@@ -19,10 +19,10 @@ function balatro_mod {
     esac
 }
 
-function direwolf {
-    i3-msg "workspace number 2;move workspace to $right_monitor;exec waterfox https://www.youtube.com/@direwolf20/videos"
-    i3-msg "workspace number 3;move workspace to $left_monitor;exec prismlauncher --launch 'FTB StoneBlock 4'"
-}
+# function direwolf {
+#     i3-msg "workspace number 2;move workspace to $right_monitor;exec waterfox https://www.youtube.com/@direwolf20/videos"
+#     i3-msg "workspace number 3;move workspace to $left_monitor;exec prismlauncher --launch 'FTB StoneBlock 4'"
+# }
 
 function _kill {
     local pid
@@ -70,10 +70,6 @@ function startup {
 }
 
 
-function socialmedia {
-    waterfox -new-tab 'https://www.facebook.com/?sk=h_chr' -new-tab 'https://mastodon.sdf.org/home' -new-tab 'https://bsky.app/' &
-}
-
 function timer {
     local name
     local duration
@@ -92,14 +88,13 @@ function xcompose {
     grep --no-filename '^<Multi_key>' /usr/share/X11/locale/en_US.UTF-8/Compose ~/.XCompose | sed -e 's/<Multi_key> <//' -e 's/\s\+/ /g' -e 's/> </ /g' -e 's/> :/:/'| menu | grep -o '"."' | grep -o '[^"]' | xclip -selection clipboard
 }
 
-case "$(echo -e "Balatro Modloader\ndirewolf20\nkill\nMinecraft\nResend Notifications\nRuntime\nSocial Media\nStartup\nTimer\nXCompose" | menu)" in
+case "$(echo -e "Balatro Modloader\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
     'Balatro Modloader') balatro_mod ;;
-    direwolf20) direwolf ;;
+    # direwolf20) direwolf ;;
     'kill') _kill ;;
     Minecraft) minecraft ;;
     'Resend Notifications') resend_notif ;;
     Runtime) runtime ;;
-    'Social Media') socialmedia ;;
     Startup) startup ;;
     Timer) timer ;;
     XCompose) xcompose ;;
