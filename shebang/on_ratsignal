@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 body="$3"
 
-system="$(echo "$body" | sed 's/&quot;/"/g' | grep -o 'System: "[^"]\+"' | grep -o '".\+' | grep -o '[^"]\+')"
+system="$(echo "$body" |
+    sed 's/&quot;/"/g' |
+    grep -o 'System: "[^"]\+"' |
+    grep -o '".\+' |
+    grep -o '[^"]\+')"
 echo "$system" | xclip -selection clipboard
 spd-say -w "rat signal"
 
@@ -20,12 +24,17 @@ if echo "$body" | grep 'Code Red'; then
 fi
 
 # My setup pronounces "Sol" wrong
-distance="$(echo "$body" | grep -o '[0-9.]\+ LY from [^)]\+' | sed 's/LY/light years/' | sed 's/from Sol$/from soul/')"
+distance="$(echo "$body" |
+    grep -o '[0-9.]\+ LY from [^)]\+' |
+    sed 's/LY/light years/' |
+    sed 's/from Sol$/from soul/')"
 if [ -n "$distance" ]; then
     spd-say -w "$distance"
 fi
 
-language="$(echo "$body" | grep -o 'Language: [^(]\+' | sed 's/:/ is/')"
+language="$(echo "$body" |
+    grep -o 'Language: [^(]\+' |
+    sed 's/:/ is/')"
 spd-say -w "$language"
 
 # "copied" sounded like "cop ed" with my setup, "coppeed" sounds better

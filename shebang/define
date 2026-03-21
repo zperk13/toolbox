@@ -8,7 +8,9 @@ fi
 fzf_args='--ignore-case --reverse --preview-window=wrap --cycle'
 
 if (( $# == 0 )); then
-    word="$(cat /usr/share/dictd/wn.index | cut -f1 | fzf $fzf_args --preview="wn {} -over")"
+    word="$(cat /usr/share/dictd/wn.index |
+        cut -f1 |
+        fzf $fzf_args --preview="wn {} -over")"
 else
     word="$@"
 fi

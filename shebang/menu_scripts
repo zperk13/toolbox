@@ -26,7 +26,9 @@ function balatro_mod {
 
 function _kill {
     local pid
-    pid="$(ps a --no-headers --user "$(whoami)" --format=pid,comm,args --sort=comm | menu | awk '{print $1}')"
+    pid="$(ps a --no-headers --user "$(whoami)" --format=pid,comm,args --sort=comm |
+        menu |
+        awk '{print $1}')"
     if [[ -z "$pid" ]]; then exit 0; fi
     notify-send "Killing $pid"
     kill "$pid"
@@ -35,7 +37,9 @@ function _kill {
 
 function minecraft {
     local instance="$(ls -d ~/.local/share/PrismLauncher/instances/*/ | while IF= read -r dir; do
-        local name="$(echo "$dir" | sed 's/.\+instances\///' | sed 's/\/$//')"
+        local name="$(echo "$dir" |
+            sed 's/.\+instances\///' |
+            sed 's/\/$//')"
         printf "%s" "$name"
         printf "\0icon\x1f%sminecraft/icon.png\n" "$dir"
     done | menu)"
@@ -85,7 +89,12 @@ function timer {
 }
 
 function xcompose {
-    grep --no-filename '^<Multi_key>' /usr/share/X11/locale/en_US.UTF-8/Compose ~/.XCompose | sed -e 's/<Multi_key> <//' -e 's/\s\+/ /g' -e 's/> </ /g' -e 's/> :/:/'| menu | grep -o '"."' | grep -o '[^"]' | xclip -selection clipboard
+    grep --no-filename '^<Multi_key>' /usr/share/X11/locale/en_US.UTF-8/Compose ~/.XCompose |
+        sed -e 's/<Multi_key> <//' -e 's/\s\+/ /g' -e 's/> </ /g' -e 's/> :/:/' |
+        menu |
+        grep -o '"."' |
+        grep -o '[^"]' |
+        xclip -selection clipboard
 }
 
 case "$(echo -e "Balatro Modloader\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in

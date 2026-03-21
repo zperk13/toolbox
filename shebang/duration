@@ -19,5 +19,8 @@ for arg in "$@"; do
         echo -n "$arg: "
         tstyle reset
     fi
-    ffmpeg -i "$arg" 2>&1 | grep --basic-regexp --only-matching 'Duration: [0-9.:]\+' | grep --basic-regexp --only-matching ' [0-9.:]\+' | grep --color=never --basic-regexp --only-matching '[0-9.:]\+'
+    ffmpeg -i "$arg" 2>&1 |
+        grep --basic-regexp --only-matching 'Duration: [0-9.:]\+' |
+        grep --basic-regexp --only-matching ' [0-9.:]\+' |
+        grep --color=never --basic-regexp --only-matching '[0-9.:]\+'
 done
