@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
-set -x # echo the commands are are being run
-
 if is_command eos-update; then
     if is_command yay; then
         eos-update --yay
@@ -20,21 +18,26 @@ fi
 if is_command rustup; then
     rustup update stable
 fi
+
+commands=""
+
 if is_command cargo; then
     # https://stackoverflow.com/a/66049504 with `egrep` replaced with `grep -E`
-    cargo install $(cargo install --list |
+    commands="$commands -c 'cargo install $(cargo install --list |
         grep -E '^[a-z0-9_-]+ v[0-9.]+:$' |
-        cut -f1 -d' ')
+        cut -f1 -d' ' | tr '\n' ' ')'"
 fi
 
 if is_command flatpak; then
-    flatpak update
+    commands="$commands -c 'flatpak update --assumeyes --noninteractive'"
 fi
 
 if is_command pipx; then
-    pipx upgrade-all
+    commands="$commands -c 'pipx upgrade-all'"
 fi
 
 if is_command pnpm; then
-    pnpm update --global
+    commands="$commands -c 'pnpm update --global'"
 fi
+
+eval "noscroll $commands"
