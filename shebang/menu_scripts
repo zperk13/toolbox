@@ -19,6 +19,10 @@ function balatro_mod {
     esac
 }
 
+function deadlock_timings {
+    notify-send -t 0 'Deadlock Timings' "2:00 Easy Jungles + Crates + Golden Statues\n5:00 Bridge Buffs\n6:00 Medium Jungles\n8:00 Hard Jungles + Sinner's Sacrifice + Trooper Souls are Orbed\n10:00 Soul Urn + Mid-Boss + Bridge Buffs + Creates and Golden Statues above Mid-Boss\nEvery 5 minutes after: Soul Urn + Bridge Buffs"
+}
+
 # function direwolf {
 #     i3-msg "workspace number 2;move workspace to $right_monitor;exec waterfox https://www.youtube.com/@direwolf20/videos"
 #     i3-msg "workspace number 3;move workspace to $left_monitor;exec prismlauncher --launch 'FTB StoneBlock 4'"
@@ -97,8 +101,9 @@ function xcompose {
         xclip -selection clipboard
 }
 
-case "$(echo -e "Balatro Modloader\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
+case "$(echo -e "Balatro Modloader\nDeadlock Timings\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
     'Balatro Modloader') balatro_mod ;;
+    'Deadlock Timings') deadlock_timings ;;
     # direwolf20) direwolf ;;
     'kill') _kill ;;
     Minecraft) minecraft ;;
