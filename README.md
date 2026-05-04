@@ -45,6 +45,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Print public ip
 - my_ip
 	- Print local & public ip
+- noscroll
+	- Inline no-interaction terminal multiplexer
 - notification_history
 	- Dunst notification history
 - nsu
