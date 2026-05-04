@@ -4,3 +4,6 @@
 [submodule "rust/tstyle"]
 	path = rust/tstyle
 	url = https://github.com/zperk13/tstyle
+[submodule "rust/noscroll"]
+	path = rust/noscroll
+	url = https://github.com/zperk13/noscroll.git
