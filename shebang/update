@@ -15,6 +15,14 @@ elif is_command pacman; then
     pacman -Syu
 fi
 
+if is_command aptitude; then
+    aptitude update # May need to be sudo'd. I don't have aptitude
+    aptitude full-upgrade # May need to be sudo'd. I don't have aptitude
+elif is_command apt-get; then
+    sudo apt-get update
+    sudo apt-get dist-upgrade
+fi
+
 if is_command rustup; then
     rustup update stable
 fi
