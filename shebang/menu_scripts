@@ -20,7 +20,7 @@ function balatro_mod {
 }
 
 function deadlock_timings {
-    notify-send -t 0 'Deadlock Timings' "2:00 Easy Jungles + Crates + Golden Statues\n5:00 Bridge Buffs\n6:00 Medium Jungles\n8:00 Hard Jungles + Sinner's Sacrifice\n10:00 Soul Urn + Mid-Boss + Bridge Buffs + Creates and Golden Statues above Mid-Boss\nEvery 5 minutes after: Soul Urn + Bridge Buffs"
+    notify-send -t 0 'Deadlock Timings' "2:00 Easy Jungles\n3:00 Crates + Golden Statues\n5:00 Bridge Buffs + Medium Jungles\n8:00 Hard Jungles + Sinner's Sacrifice\n10:00 Soul Urn + Mid-Boss + Bridge Buffs + Crates and Golden Statues above Mid-Boss\n12:00 Guardians max vulnerability\n15:00 and Every 5 minutes after: Soul Urn + Bridge Buffs"
 }
 
 # function direwolf {
