@@ -9,6 +9,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- zip a folder with maximum compression
 - clean
 	- Uninstall unused dependencies
+- codec
+	- Get the codec(s) of a file
 - define
 	- Interactive wrapper around Wordnet. Dictionary/Thesaurus/etc.
 - dl
