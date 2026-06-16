@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+date
+echo -n 'Waiting for internet access...'
+while true; do
+    if ping -c 1 -W 5 -a 8.8.8.8 > /dev/null; then
+        echo " and $((SECONDS % 60)) seconds"
+        echo 'Connected to internet'
+        date
+        notify-send -t 0 'Connected to internet'
+        exit 0;
+    fi
+    if (( SECONDS > 30 )); then
+        printf "\rWaiting for internet access... Time Elapsed: "
+        ((hours = SECONDS / (60 * 60) ))
+        if (( hours > 0 )); then
+            echo -n "$hours hours and "
+        fi
+        echo -n "$(( SECONDS / 60 % 60 )) minutes"
+    fi
+    sleep 55s # 1 minute -5 seconds for the timeout set above with -W
+done
