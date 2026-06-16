@@ -49,3 +49,5 @@ if is_command pnpm; then
 fi
 
 eval "noscroll $commands"
+
+date > ~/last_update_time
