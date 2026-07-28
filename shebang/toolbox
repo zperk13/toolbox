@@ -40,6 +40,7 @@ echo -e "transcribe\t\t\tCreate a trascript for a .wav file. If file isn't a .wa
 echo -e 'tstyle\t\t\t\tEasily style terminal output without having to remember ansi escape codes or tput codes. tstyle --help for more information'
 echo -e 'update\t\t\t\tUpdate Arch/Cargo/Flatpak/pipx/pnpm packages, and Rust'
 echo -e 'update_mirrors\t\t\tRerank pacman mirrors'
+echo -e 'waitnet\t\t\t\tWaits for internet access, then sends a notification'
 echo -e 'weather\t\t\t\tGet the weather'
 echo -e 'whisper_transcript_to_srt\tShould only be used by transcribe'
 echo -e 'without_last_extension\t\tRemove the last extension of whatever is piped into it'

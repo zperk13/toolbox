@@ -87,6 +87,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Update Arch/Cargo/Flatpak/pipx/pnpm packages, and Rust
 - update_mirrors
 	- Rerank pacman mirrors
+- waitnet
+	- Waits for internet access, then sends a notification
 - weather
 	- Get the weather
 - whisper_transcript_to_srt
