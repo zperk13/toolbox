@@ -10,15 +10,6 @@ function text_input {
 left_monitor='output HDMI-A-1'
 right_monitor='output DisplayPort-1'
 
-function balatro_mod {
-    local dir="$HOME/.local/share/Steam/steamapps/common/Balatro"
-    case "$(echo -e "Enable\nDisable" | menu 'Balatro Modloader')" in
-        Enable) mv "$dir/version.dll.disabled" "$dir/version.dll" && notify-send 'Balatro Modloader Enabled';;
-        Disable) mv "$dir/version.dll" "$dir/version.dll.disabled" && notify-send 'Balatro Modloader Disabled';;
-        *) exit 1
-    esac
-}
-
 function deadlock_timings {
     notify-send -t 0 'Deadlock Timings' "2:00 Easy Jungles\n3:00 Crates + Golden Statues\n5:00 Bridge Buffs + Medium Jungles\n8:00 Hard Jungles + Sinner's Sacrifice\n10:00 Soul Urn + Mid-Boss + Bridge Buffs + Crates and Golden Statues above Mid-Boss\n12:00 Guardians max vulnerability\n15:00 and Every 5 minutes after: Soul Urn + Bridge Buffs"
 }
@@ -102,7 +93,6 @@ function xcompose {
 }
 
 case "$(echo -e "Balatro Modloader\nDeadlock Timings\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
-    'Balatro Modloader') balatro_mod ;;
     'Deadlock Timings') deadlock_timings ;;
     # direwolf20) direwolf ;;
     'kill') _kill ;;
