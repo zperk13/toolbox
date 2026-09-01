@@ -92,7 +92,7 @@ function xcompose {
         xclip -selection clipboard
 }
 
-case "$(echo -e "Balatro Modloader\nDeadlock Timings\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
+case "$(echo -e "Deadlock Timings\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nXCompose" | menu)" in
     'Deadlock Timings') deadlock_timings ;;
     # direwolf20) direwolf ;;
     'kill') _kill ;;
