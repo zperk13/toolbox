@@ -33,6 +33,7 @@ echo -e 'sa\t\t\t\tSearch All. fzf the contents of all available files and open 
 echo -e 'scenes\t\t\Extract the scenes from a video'
 echo -e 'sortlen\t\t\t\tSort stdin lines from shortest to longest'
 echo -e 'sortlenrev\t\t\tSort stdin lines from longest to shortest'
+echo -e 'spellingbee\t\t\tSolver for The New York Times'"'"'s spelling bee. Make sure the first letter is the yellow one.'
 echo -e 'store\t\t\t\tzip a folder without any compression'
 echo -e 'termsize\t\t\tMeasure how many characters wide/tall your terminal is'
 echo -e 'toolbox\t\t\t\tThis. Lists everything in your toolbox.'

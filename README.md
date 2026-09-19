@@ -73,6 +73,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Sort stdin lines from shortest to longest
 - sortlenrev
 	- Sort stdin lines from longest to shortest
+- spellingbee
+	- Solver for The New York Times's spelling bee. Make sure the first letter is the yellow one.
 - store
 	- zip a folder without any compression
 - termsize
