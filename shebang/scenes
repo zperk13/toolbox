@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if ! is_command; scenedetect; then
+    # https://www.scenedetect.com/
+    >&2 echo 'scenes requires scenedetect'
+fi
+
+for arg in "$@"; do
+    scenedetect -i "$arg" split-video
+done
