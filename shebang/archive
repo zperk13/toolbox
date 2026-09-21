@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
-if ! is_command 7z; then
-    >&2 echo 'archive reqiures 7z'
-    exit 7;
-elif (( $# == 0 )); then
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash --pure -p p7zip
+# shellcheck shell=bash
+if (( $# == 0 )); then
     >&2 echo "Expected an argument (a file or directory), but didn\'t get one"
     exit 1;
 elif (( $# > 1 )); then

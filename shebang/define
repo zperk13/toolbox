@@ -1,14 +1,12 @@
-#!/usr/bin/env bash
-
-if ! is_command wn; then
-    >&2 echo 'define requires WordNet'
-    exit 1;
-fi
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash --pure -E "let pkgs = import <nixpkgs> {}; in pkgs.mkShell { packages = [ pkgs.wordnet pkgs.dictdDBs.wordnet pkgs.fzf ]; DICTD_PATH = \"\${pkgs.dictdDBs.wordnet}/share/dictd\"; }"
+# shellcheck shell=bash
 
 fzf_args='--ignore-case --reverse --preview-window=wrap --cycle'
 
 if (( $# == 0 )); then
-    word="$(cat /usr/share/dictd/wn.index |
+    # If you're not using nix, the file path is /usr/share/dictd/wn.index instead
+    word="$(cat "$DICTD_PATH/wn.index" |
         cut -f1 |
         fzf $fzf_args --preview="wn {} -over")"
 else

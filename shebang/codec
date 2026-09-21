@@ -1,10 +1,7 @@
-#!/usr/bin/env bash
-if ! is_command ffprobe; then
-    >&2 echo 'codec requires ffprobe'
-    exit 4
-elif ! is_command grep; then
-    >&2 echo 'codec requires grep'
-elif (( $# == 0 )); then
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash --pure -p ffmpeg ripgrep
+# shellcheck shell=bash
+if (( $# == 0 )); then
     >&2 echo 'Expected a video or audio file as an argument but got zero arguments'
     exit 1
 fi
