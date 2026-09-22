@@ -3,7 +3,7 @@ if ! is_command 7z; then
     >&2 echo 'archive reqiures 7z'
     exit 7;
 elif (( $# == 0 )); then
-    >&2 echo "Expected an argument (a file or directory), but didn\'t get one"
+    >&2 echo "Expected an argument (a file or directory), but didn't get one"
     exit 1;
 elif (( $# > 1 )); then
     >&2 echo "Expected only 1 argument, got $#"
@@ -12,5 +12,27 @@ elif [ ! -f "$1" ] && [ ! -d "$1" ]; then
     >&2 echo "$1 is not a valid file or directory"
     exit 3;
 else
-    7z a -tzip -mx9 "${1%/}.zip" "${1}"
+    orig_file="${1}"
+    zip_file="${1%/}.zip"
+    7z a -tzip -mx9 "${zip_file}" "${orig_file}" || exit
+    orig_size="$(du -s "${orig_file}" | cut -f1)"
+    zip_size="$(du -s "${zip_file}" | cut -f1)"
+    savings="$(bc <<< "scale=3; ${orig_size}/${zip_size}" | sed 's/\.\?0\+$//')"
+    echo
+    if is_command tstyle; then
+        if [[ "$savings" == '.'* ]]; then
+            tstyle red
+        else
+            tstyle green
+        fi
+    fi
+    if [[ "$savings" == '1' ]]; then
+        s=''
+    else
+        s='s'
+    fi
+    echo "The uncompressed version can fit in the compressed version ${savings} time${s}"
+    if is_command tstyle; then
+        tstyle reset
+    fi
 fi
