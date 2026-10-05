@@ -51,6 +51,11 @@ function minecraft {
     prismlauncher --launch "$instance"
 }
 
+function reload_waybar {
+    chezmoi apply
+    killall -SIGUSR2 waybar
+}
+
 function resend_notif {
     count="$(text_input "How many notifications?")"
     resend_notification "$count"
@@ -189,12 +194,13 @@ function xcompose {
         xclip -selection clipboard
 }
 
-case "$(echo -e "Balatro Mods\nDeadlock Timings\nkill\nMinecraft\nResend Notifications\nRuntime\nStartup\nTimer\nWallpaper\nXCompose" | menu)" in
+case "$(echo -e "Balatro Mods\nDeadlock Timings\nkill\nMinecraft\nReload Waybar\nResend Notifications\nRuntime\nStartup\nTimer\nWallpaper\nXCompose" | menu)" in
     'Balatro Mods') balatro_mod ;;
     'Deadlock Timings') deadlock_timings ;;
     # direwolf20) direwolf ;;
     'kill') _kill ;;
     Minecraft) minecraft ;;
+    'Reload Waybar') reload_waybar ;;
     'Resend Notifications') resend_notif ;;
     Runtime) runtime ;;
     Startup) startup ;;
