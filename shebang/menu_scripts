@@ -95,6 +95,9 @@ function timer {
 function wallpaper {
     local wp_dir="$HOME/Pictures/Wallpapers"
     
+    local res
+    res=$(xrandr | grep '\*' | awk '{print $1}' | head -n 1)
+    
     local rofi_theme='
         window { width: 60%; height: 70%; } 
         listview { columns: 4; lines: 3; flow: horizontal; } 
@@ -114,7 +117,6 @@ function wallpaper {
     )
 
     local image
-
     image=$(
         find "$wp_dir" -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "current.png" -printf "%P\n" \
             | while read -r file; do
@@ -131,6 +133,7 @@ function wallpaper {
     mapfile -t color_array < <(grep -o '"#[a-fA-F0-9]\{6\}"' ~/.local/share/chezmoi/.chezmoidata.toml | tr -d '"\r' | sed 's/^/xc:/')
 
     magick -monitor "$full_path" \
+      -filter point -resize "${res}^" -gravity center -extent "$res" \
       \( hald:8 -colorspace Oklab +dither \
          \( "${color_array[@]}" +append -write mpr:palette +delete \) \
          -remap mpr:palette -colorspace sRGB \
@@ -148,7 +151,7 @@ function wallpaper {
           last_pct = pct
           
           if (pct % 10 == 0 && pct != notified) {
-              if (phase == 1) { tag = "wp-load"; text = "1/3: Loading image into memory..." }
+              if (phase == 1) { tag = "wp-load"; text = "1/3: Loading and resizing..." }
               else if (phase == 2) { tag = "wp-apply"; text = "2/3: Applying color palette..." }
               else { tag = "wp-save"; text = "3/3: Saving final image..." }
               
