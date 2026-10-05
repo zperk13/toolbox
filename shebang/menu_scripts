@@ -71,10 +71,18 @@ function startup {
         notify-send "Startup failed because of lack of internet access"
         exit
     fi
-    i3-msg "workspace number 2;move workspace to $left_monitor"
-    i3-msg "workspace number 1;move workspace to output $right_monitor;exec discord;exec thunderbird"
-    i3-msg 'workspace number 2' # Workspace 2 is on the left, but the current workspace on the left monitor will be workspace 3. This makes workspace 2 the active workspace on the left monitor
-    i3-msg 'workspace number 1' # Focus workspace 1 so Discord opens in the correct workspace since it likes to launch a window, wait, close it, then launch another window
+
+    if [ "$WAYLAND_DISPLAY" ]; then
+        niri msg action focus-monitor "DP-1"
+        niri msg action focus-workspace 1
+        niri msg action spawn -- discord
+        niri msg action spawn -- thunderbird
+    else
+        i3-msg "workspace number 2;move workspace to $left_monitor"
+        i3-msg "workspace number 1;move workspace to output $right_monitor;exec discord;exec thunderbird"
+        i3-msg 'workspace number 2' # Workspace 2 is on the left, but the current workspace on the left monitor will be workspace 3. This makes workspace 2 the active workspace on the left monitor
+        i3-msg 'workspace number 1' # Focus workspace 1 so Discord opens in the correct workspace since it likes to launch a window, wait, close it, then launch another window
+    fi
 }
 
 
@@ -160,7 +168,12 @@ function wallpaper {
           }
       }'
 
-    hsetroot -cover "$output_path"
+    if [ "$WAYLAND_DISPLAY" ]; then
+        killall swaybg 2>/dev/null
+        swaybg --image "$output_path"
+    else
+        hsetroot -cover "$output_path"
+    fi
     
     notify-send -h string:x-dunst-stack-tag:wp-load -t 2000 "Wallpaper" "1/3: Load complete"
     notify-send -h string:x-dunst-stack-tag:wp-apply -t 2000 "Wallpaper" "2/3: Palette applied"
