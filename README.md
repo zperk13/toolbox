@@ -29,6 +29,8 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 	- Has an exit code of 0 or 1 depending on if a command exists
 - isolate
 	- Go through all files in this folder, group together ones that are the same before the first non-starting . into their own folder
+- jxl_lossless
+	- Losslessly convert files to JPEG XL
 - llc
 	- Live Line Count. Pipe output into it and count the lines as they appear. llc --help for more options
 - maintenance

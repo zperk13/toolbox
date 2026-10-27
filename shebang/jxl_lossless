@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+if ! is_command cjxl; then
+    >&2 echo 'jxl_lossless requires cjxl (from libjxl)'
+    exit 1
+elif ! is_command without_last_extension; then
+    >&2 echo 'jxl_lossless requires without_last_extension'
+    exit 2
+elif ! is_command tstyle; then
+    >&2 echo 'jxl_lossless requires tstyle'
+    exit 3
+elif ! is_command du; then
+    >&2 echo 'jxl_lossless requires du'
+    exit 4
+elif ! is_command bc; then
+    >&2 echo 'jxl_lossless requires bc'
+    exit 5
+fi
+
+function clearline {
+    echo -ne "\r\033[K"
+}
+
+
+for arg in "$@"; do
+    out="$(echo "$arg" | without_last_extension).jxl"
+    tstyle blue
+    echo -ne "$arg -> $out"
+    tstyle reset
+    if [ -e "$out" ]; then
+        clearline
+        tstyle yellow
+        echo "$arg -> $out but $out already exists"
+        tstyle reset
+    else
+        # --distance=0 = lossless
+        # --effort=9 = spend extra time making the file as small as possible
+        if ! stderr="$(cjxl --distance=0 --effort=9 "$arg" "$out" 2>&1)"; then
+            echo
+            tstyle red
+            echo "Error from jxl"
+            tstyle reset
+            echo "$stderr"
+            exit 6
+        fi
+        orig_size="$(du -s "${arg}" | cut -f1)"
+        jxl_size="$(du -s "${out}" | cut -f1)"
+        savings="$(bc <<< "scale=3; ${orig_size}/${jxl_size}" | sed 's/\.\?0\+$//')"
+        clearline
+        tstyle green
+        echo -e "$arg -> $out\t$savings times savings"
+        tstyle reset
+    fi
+done
