@@ -68,7 +68,7 @@ Use `--recursive` when git cloning since this repo has submodules. If you alread
 - sa
 	- Search All. fzf the contents of all available files and open nvim on the selected line
 - scenes
-	- xtract the scenes from a video
+	- Extract the scenes from a video
 - sortlen
 	- Sort stdin lines from shortest to longest
 - sortlenrev
