@@ -12,6 +12,8 @@ disk() {
 
 disk
 
+sudo journalctl --vacuum-time=4weeks
+
 if is_command yay; then
     yay -Yc
     yay -Sc
