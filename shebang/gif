@@ -13,8 +13,8 @@ elif ! is_command gifski; then
 elif ! is_command fps; then
     >&2 echo "fps isn't a command. Did you just download this script by itself? Fair enough, but it does depend on the fps script too."
     exit 7
-elif (( $# != 2 )); then
-    >&2 echo "Expected 2 arguments (input file, output file) but got $#"
+elif (( $# != 2 && $# != 3 )); then
+    >&2 echo "Expected 2 or 3 arguments (input file, output file, optional quality 0-100 (default 90)) but got $#"
     exit 1
 elif [ ! -f "$1" ]; then
     >&2 echo "$1 is not a valid file"
@@ -34,4 +34,8 @@ if ! mkdir "$dir"; then
     exit 8
 fi
 ffmpeg -i "$1" "${dir}/frame%04d.png"
-gifski -o "$2" --fps "${fps_variable}" ${dir}/frame*.png
+if [ -n "$3" ]; then
+    gifski -o "$2" --fps "${fps_variable}" ${dir}/frame*.png --quality "$3"
+else
+    gifski -o "$2" --fps "${fps_variable}" ${dir}/frame*.png
+fi
